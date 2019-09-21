@@ -1,1 +1,3 @@
-export default () => {}
+import ProfilePicture from './ProfilePicture'
+
+export default [ProfilePicture]

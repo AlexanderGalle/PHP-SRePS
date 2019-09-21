@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
+import Dashboard from './views/Dashboard'
+import LoginScreen from './views/Authentication/LoginScreen'
 
 export default () => {
-    return <div className='App'>{'App goes here'}</div>
+    const [user, setUser] = useState(false)
+    if (user) return <Dashboard />
+    return <LoginScreen />
 }
