@@ -1,3 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { Grid } from '@material-ui/core';
+import Navigation from '../../components/Navigation';
 
-export default () => <h1>{'Dashboard'}</h1>
+export default () => (
+    <Grid container>
+        <Grid item md={2}>
+            <Navigation />
+        </Grid>
+        <Grid item md={10}>
+            Dashboard
+        </Grid>
+    </Grid>
+);
