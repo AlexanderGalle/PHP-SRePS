@@ -16,31 +16,17 @@ import {
     ListItem
 } from '@material-ui/core';
 import Navigation from '../../../components/Navigation';
+import InventoryAddItem from './additem';
+
+
 
 export default () => {
     return (
         <div>
             <h1>Inventory</h1>
-            <p>Menu Test C - Put Inventory here.</p>
-
-            <FormControl>
-                <ButtonGroup
-                    fullWidth
-                    color='primary'
-                    size='large'
-                >
-                    <Button
-                        variant='contained'
-                        style={{
-                            marginTop: 18
-                        }}
-                        onClick={() => {}}
-                    >
-                        Add Item
-                    </Button>
-                </ButtonGroup>
-            </FormControl>
-
+            <p>[Need a Navigation]</p>
+            <p>[Need an Inventory table]</p><br/>
+            <InventoryAddItem/>
         </div>
     )
 }
