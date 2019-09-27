@@ -28,8 +28,8 @@ export default () => {
             </Grid>
             <Grid item md={10}>
                 <p style={{ textAlign: 'center', fontSize: 35}}>Sales Record</p>
-                <Grid style={{border: 1, borderColor: Color.lightGreen}}>
-                    <div id="salesRecord" style={{ textAlign: 'center', fontSize: 20, padding: 20}}>
+                <Grid style={{ backgroundColor: Color.lightGreen, borderRadius: 10, borderColor: Color.darkBlue , borderWidth: 12 , width: 1100}}>
+                    <div id="salesRecord" style={{ textAlign: 'left', fontSize: 20, padding: 20}}>
                         <p>box</p>
                         <p>box</p>
                         <p>box</p>
