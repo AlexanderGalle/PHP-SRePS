@@ -11,7 +11,10 @@ export default () => (
             <Link to='/tables'>Tables</Link>
         </ListItem>
         <ListItem>jaskldf</ListItem>
-        <ListItem>jaskldf</ListItem>
+        <ListItem>
+            <Link to='/sales'>Sales Record</Link>
+        </ListItem>
+        
         <ListItem>jaskldf</ListItem>
     </List>
 );
