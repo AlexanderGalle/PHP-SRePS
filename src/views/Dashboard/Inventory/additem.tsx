@@ -22,6 +22,9 @@ const InventoryAddItem = () => {
                 setPrice('')
                 setQuantity('')
             })
+            .then(() => {
+                window.location.reload()
+            })
     }
 
     return (

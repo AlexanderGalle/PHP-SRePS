@@ -1,32 +1,22 @@
 import React from 'react';
-import firebase from '../../../firebase';
-import {
-    Grid,
-    FormControl,
-    ButtonGroup,
-    Button,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-    Paper,
-    Checkbox,
-    List,
-    ListItem
-} from '@material-ui/core';
-import Navigation from '../../../components/Navigation';
 import InventoryAddItem from './additem';
+import InventoryDisplayItem from './displayitem';
+// Nav bar
+import { Grid } from '@material-ui/core';
+import Navigation from '../../../components/Navigation';
 
 
-
-export default () => {
-    return (
-        <div>
-            <h1>Inventory</h1>
-            <p>[Need a Navigation]</p>
-            <p>[Need an Inventory table]</p><br/>
-            <InventoryAddItem/>
-        </div>
-    )
-}
+export default () => (
+    <Grid container>
+        <Grid item md={2}>
+            <Navigation/>
+        </Grid>
+        <Grid item md={10}>
+            <div>
+                <h1>Inventory</h1>
+                <InventoryDisplayItem/>
+                <InventoryAddItem/>
+            </div>
+        </Grid>
+    </Grid>
+);
