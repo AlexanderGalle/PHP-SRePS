@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import ProductList from './ProductList';
+import Inventory from './Inventory';
 import SalesRecord from './SalesRecord';
 
 export default () => (
@@ -10,6 +11,7 @@ export default () => (
         <Switch>
             <Route exact path='/' component={Dashboard} />
             <Route exact path='/tables' component={ProductList} />
+            <Route exact path='/inventory' component={Inventory} />
             <Route exact path='/sales' component={SalesRecord}/>
             <Route path='*'>
                 <Redirect to='/' />
