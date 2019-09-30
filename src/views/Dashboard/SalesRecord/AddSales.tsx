@@ -21,6 +21,18 @@ export default ({ formModal, toggleModal }: { formModal: false|true|undefined, t
             console.log("Made it to function"+ " " + name+ " " +price+ " " +quantity)
             firebase.firestore().collection('salesRecord')
             .add({item_name: name,price:price,quantity:quantity})
+
+            firebase.firestore().collection('inventoryItem').get().then((snapshot) => {
+                snapshot.docs.forEach(doc => {
+                    if(doc.data().name == name){
+                        console.log("Names are equal");
+                        var newQuantity = doc.data().quantity - parseInt(quantity);
+                        //var update = firebase.database().ref("inventoryItem/");
+                        //update.update({:{quantity:newQuantity}});
+                    }
+                })
+            })
+
             toggleModal(false);
         }
         else if(name == "" || price == "" || quantity == ""){
