@@ -14,23 +14,21 @@ export default ({ formModal, toggleModal }: { formModal: false|true|undefined, t
     var price = ""
     var quantity = ""
 
+    
     function AddItem(){
-        
+        console.log("name: " + name+ " price: " + price+ " quantity " +quantity);
         if(name != "" && price != "" && quantity != ""){
             console.log("Made it to function"+ " " + name+ " " +price+ " " +quantity)
             firebase.firestore().collection('salesRecord')
             .add({item_name: name,price:price,quantity:quantity})
             toggleModal(false);
         }
-        else if(name == "" && price == "" && quantity == ""){
+        else if(name == "" || price == "" || quantity == ""){
             alert("Please fill out all fields");
+            
         }
 
-        name = ""
-        price = ""
-        quantity = ""
         
-
     }
 
     return (
@@ -45,9 +43,9 @@ export default ({ formModal, toggleModal }: { formModal: false|true|undefined, t
                         <h1>Add Item to Sales Record</h1>
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
-                       <label>Item Name  <input type ="text" onChange ={e => name = e.currentTarget.value} /></label>
-                       <label>Price  <input type ="text" onChange ={e => price = e.currentTarget.value}/></label>
-                       <label>Quantity  <input type ="text" onChange ={e => quantity = e.currentTarget.value}/></label>
+                       <label>Item Name  <input type ="text" id = "name" onChange ={e => name = e.currentTarget.value} /></label>
+                       <label>Price  <input type ="number" min="0" id="price" onChange ={e => price = e.currentTarget.value}/></label>
+                       <label>Quantity  <input type ="number" min="0" id = "quantity"onChange ={e => quantity = e.currentTarget.value}/></label>
                        <button type="button" id="submit" onClick={() => AddItem()}>Add</button>
                     </CardBody>
                 </Card>
