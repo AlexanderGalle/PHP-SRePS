@@ -1,8 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-
-// Your web app's Firebase configuration
-var firebaseConfig = {
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
     apiKey: "AIzaSyC3nTGgKmbPIYPloy-wF7SM0rZoKF9dBmM",
     authDomain: "dp2-php.firebaseapp.com",
     databaseURL: "https://dp2-php.firebaseio.com",

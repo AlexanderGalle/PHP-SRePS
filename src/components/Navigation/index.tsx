@@ -13,7 +13,9 @@ export default () => (
         <ListItem>
             <Link to='/inventory'>Inventory</Link>
         </ListItem>
-        <ListItem>jaskldf</ListItem>
+        <ListItem>
+            <Link to='/sales'>Sales Record</Link>
+        </ListItem>
         <ListItem>jaskldf</ListItem>
     </List>
 );
