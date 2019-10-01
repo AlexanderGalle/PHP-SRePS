@@ -33,7 +33,7 @@ const InventoryAddItem = () => {
         <h4>Create New Sales Item</h4>
         <div>
             <label>Name</label>
-            <input type='text' value={name} onChange={e => setName(e.currentTarget.value)}/>
+            <input type='text' value={name} onChange={e => setName(e.currentTarget.value.toLowerCase())}/>
         </div>
         <div>
             <label>Price</label>

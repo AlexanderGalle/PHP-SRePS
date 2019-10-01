@@ -1,32 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Card,
     CardBody,
     CardHeader,
-    Modal
+    CardFooter,
+    Modal,
+    Alert,
+    Popover
 } from 'reactstrap';
 import firebase from '../../../firebase';
 
-
-function EditItemModal(itemID : String) {
-}
-
 export default ({ formModal, toggleModal }: { formModal: false|true|undefined, toggleModal: Function }) => {
-    var name = ""
-    var price = ""
-    var quantity = ""
-    
     function EditItem(){
-        console.log("name: " + name+ " price: " + price+ " quantity " +quantity);
-        if(name != "" && price != "" && quantity != ""){
-            //console.log("Made it to function"+ " " + name+ " " +price+ " " +quantity)
-            //firebase.firestore().collection('salesRecord')
-            //.add({item_name: name,price:price,quantity:quantity})
-            toggleModal(false);
-        }
-        else if(name == "" || price == "" || quantity == ""){
-            alert("Please fill out all fields");  
-        }
+        alert("Apply");
     }
 
     return (
@@ -41,11 +27,14 @@ export default ({ formModal, toggleModal }: { formModal: false|true|undefined, t
                         <h1>Edit Item</h1>
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
-                       <label>Item Name  <input type ="text" id = "name" onChange ={e => name = e.currentTarget.value} /></label>
-                       <label>Price  <input type ="number" min="0" id="price" onChange ={e => price = e.currentTarget.value}/></label>
-                       <label>Quantity  <input type ="number" min="0" id = "quantity"onChange ={e => quantity = e.currentTarget.value}/></label>
-                       <button type="button" id="submit" onClick={() => EditItem()}>Change</button>
+                       <label>Item Name</label>
+                       <label>Price</label>
+                       <label>Quantity</label>
                     </CardBody>
+                    <CardFooter>
+                        <button type="button" id="submit" onClick={() => EditItem()}>Apply</button>
+                        <button type="button" onClick={() => toggleModal()}>Close</button>
+                    </CardFooter>
                 </Card>
 			</div>
 		</Modal>
