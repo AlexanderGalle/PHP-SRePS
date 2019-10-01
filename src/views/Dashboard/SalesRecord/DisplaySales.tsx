@@ -1,14 +1,33 @@
-import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Container,
-    Grid,
     Table,
     TableHead,
     TableRow,
     TableCell,
     TableBody,
     Paper} from '@material-ui/core';
+import React, {useState, useEffect} from 'react'
+import firebase from '../../../firebase';
+
+function useSales() {
+    const [sales, setSales] = useState([{id: ''}])
+    
+    useEffect(() => {
+        const unsubscribe = firebase.firestore().collection('salesRecord')
+        .onSnapshot(snapshot => {
+            setSales(snapshot.docs.map(doc => {
+                return {
+                    id: doc.id,
+                    ...doc.data()
+                }
+            }))
+        })
+
+        return () => unsubscribe()
+    },[])
+    
+    return sales
+}
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,23 +40,25 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const mapData = (row: any) => {
+
+
+const mapForTable = (row: any) => {
     return (
         <TableRow key = {row.item_name}>
             <TableCell component = "th" scope = "row">
                 {row.item_name}
             </TableCell>
-            <TableCell>{row.price}</TableCell>
+            <TableCell>${row.price}</TableCell>
             <TableCell>{row.quantity}</TableCell>
-            <TableCell>{row.quantity * row.price}</TableCell>
+            <TableCell>${row.quantity * row.price}</TableCell>
             <TableCell>{row.time}</TableCell>
         </TableRow>
     )
 }
 
-let rows = [ {item_name: 'Test Item', price: 10, quantity: 20, time: '10/10/2019 11:13AM'}]
 const DisplaySales = () => {
     const classes = useStyles();
+    const sales = useSales();
 
     return (
         <div>
@@ -62,13 +83,13 @@ const DisplaySales = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map(mapData)}
+                        {sales.map(mapForTable)}
                     </TableBody>
                 </Table>
             </Paper>
         </div>
 
     )
-
 }
+
 export default DisplaySales;
