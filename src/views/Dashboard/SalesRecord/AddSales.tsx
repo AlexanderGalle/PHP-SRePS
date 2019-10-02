@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Card, CardBody, CardHeader, Modal, Alert, Popover } from "reactstrap";
+import React from "react";
+import { Card, CardBody, CardHeader, Modal} from "reactstrap";
 import firebase from "../../../firebase";
 var name = "";
 var price = "";
