@@ -1,14 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Grid } from '@material-ui/core';
 import Navigation from '../../../components/Navigation';
-import { Color } from '../../../common/'
-import { lightGreen } from '@material-ui/core/colors';
 import AddSales from './AddSales';
 import DisplaySales from './DisplaySales';
+import EditSales from './EditSales'
+import firebase from '../../../firebase'
+import {useSales} from './DisplaySales'
+
+const [formModal, setFormModal] = useState(false)
+const toggleModal = () => setFormModal(!formModal)
+
+const [formModal2, setFormModal2] = useState(false);
+const toggleModal2 = () => setFormModal2(!formModal2); // for edit model 
+
+const [editSalesRecordData, setEditSalesRecordData] = useState({
+    id: "",
+    name: "A name",
+    price: 2000,
+    quantity: 10
+});
 
 export default () => {
-    const [formModal, setFormModal] = useState(false)
-    const toggleModal = () => setFormModal(!formModal)
+    
     return (
         <Grid container>
             <Grid item md={2}>
@@ -22,6 +35,35 @@ export default () => {
             <AddSales 
                 toggleModal={toggleModal}
                 formModal={formModal}/>
+            <EditSales
+                toggleModal={toggleModal2}
+                formModal={formModal2}
+                salesRecordData = {editSalesRecordData}
+                getListItems = {useSales}
+            />
         </Grid>
     )
 }
+
+export function handleEditClick(salesRecord: any){
+    setEditSalesRecordData(salesRecord);
+    toggleModal2();
+};
+
+export function handleDeleteClick(salesRecord: any){
+    firebase.firestore().collection("inventoryItem").get()
+    .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+            if (doc.data().name === salesRecord.name) {
+                let reference = doc.data().id.trim();
+                var newQuantity = doc.data().quantity + salesRecord.quantity;
+
+                return firebase.firestore().collection("inventoryItem")
+                .doc(reference)
+                .update({quantity: newQuantity})
+                .then(firebase.firestore().collection("salesRecord").doc(salesRecord.id).delete);
+            }
+        });
+    }).catch(err => 
+        alert("Couldn't delete."));
+};

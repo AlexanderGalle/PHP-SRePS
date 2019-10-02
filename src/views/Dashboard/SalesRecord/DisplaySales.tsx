@@ -7,7 +7,6 @@
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Grid,
     Table,
     TableHead,
     TableRow,
@@ -19,9 +18,9 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import React, {useState, useEffect} from 'react'
 import firebase from '../../../firebase'
-import {handleEditClick, handleDeleteClick} from './EditDeleteHandlers'
+import {handleEditClick, handleDeleteClick} from './index'
 
-function useSales() {
+export function useSales() {
     const [sales, setSales] = useState([{id: ''}]);
     
     useEffect(() => {
