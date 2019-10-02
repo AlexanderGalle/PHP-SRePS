@@ -64,10 +64,15 @@ export default ({
                     .doc(reference2.trim());
                   var newQuantity =
                     doc.data().quantity - quantity + salesRecordData.quantity;
-                  reset2.update({ quantity: newQuantity }).then(function() {});
+                  reset2
+                    .update({ quantity: newQuantity })
+                    .then(function() {})
+                    .catch(function(error) {
+                      console.log(error);
+                    })
+                    .finally(() => getListItems());
                 }
               });
-              getListItems();
             });
             toggleModal(false);
           }
