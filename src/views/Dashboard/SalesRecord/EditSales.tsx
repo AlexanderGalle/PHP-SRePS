@@ -4,7 +4,7 @@ import firebase from "../../../firebase";
 
 interface salesRecord {
   id: string;
-  name: string;
+  item_name: string;
   price: number;
   quantity: number;
 }
@@ -20,13 +20,13 @@ export default ({
   salesRecordData: salesRecord;
   getListItems: Function;
 }) => {
-  const [name, setName] = useState<string>(salesRecordData.name);
+  const [name, setName] = useState<string>(salesRecordData.item_name);
   const [price, setPrice] = useState<number>(salesRecordData.price);
   const [quantity, setQuantity] = useState<number>(salesRecordData.quantity);
   const [id, setId] = useState<string>(salesRecordData.id);
 
   useEffect(() => {
-    setName(salesRecordData.name);
+    setName(salesRecordData.item_name);
     setPrice(salesRecordData.price);
     setQuantity(salesRecordData.quantity);
     setId(salesRecordData.id);
@@ -54,8 +54,8 @@ export default ({
               });
             inventoryItem.get().then(snapshot => {
               snapshot.docs.forEach(doc => {
-                console.log(doc.data().name + " name " + name);
-                if (doc.data().name == name) {
+                console.log(doc.data().item_name + " name " + name);
+                if (doc.data().item_name == name) {
                   let reference2 = doc.data().id;
                   const reset2 = firebase
                     .firestore()

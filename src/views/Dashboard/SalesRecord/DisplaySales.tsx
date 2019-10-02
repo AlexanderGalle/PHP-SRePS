@@ -18,7 +18,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import React, {useState, useEffect} from 'react'
 import firebase from '../../../firebase'
-import {handleEditClick, handleDeleteClick} from './index'
+import Index from './index'
 
 export function useSales() {
     const [sales, setSales] = useState([{id: ''}]);
@@ -40,6 +40,7 @@ export function useSales() {
     return sales
 }
 
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -55,7 +56,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const DisplaySales = () => {
+const DisplaySales = (  {handleDeleteClick, handleEditClick} 
+                    :   {handleDeleteClick: Function, handleEditClick: Function}) => {
     const classes = useStyles();
     const sales = useSales();
 
