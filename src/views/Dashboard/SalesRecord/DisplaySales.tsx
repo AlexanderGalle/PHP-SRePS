@@ -19,6 +19,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import React, {useState, useEffect} from 'react'
 import firebase from '../../../firebase'
+import {handleEditClick, handleDeleteClick} from './EditDeleteHandlers'
 
 function useSales() {
     const [sales, setSales] = useState([{id: ''}]);
@@ -78,10 +79,12 @@ const DisplaySales = () => {
                             return (
                                 <TableRow key = {sale.item_name}>
                                     <TableCell component = "th" scope = "row">
-                                        <Fab size = "small" aria-label="edit" className={classes.fab}>
+                                        <Fab size = "small" aria-label="edit" className={classes.fab}
+                                            onClick = {() => handleEditClick(sale)}>
                                             <EditIcon />
                                         </Fab>
-                                        <Fab size = "small" aria-label="delete" className={classes.fab}>
+                                        <Fab size = "small" aria-label="delete" className={classes.fab}
+                                            onClick = {() => handleDeleteClick(sale)}>
                                             <DeleteIcon />
                                         </Fab>
                                         {sale.item_name}
