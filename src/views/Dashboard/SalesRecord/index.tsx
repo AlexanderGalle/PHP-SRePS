@@ -6,27 +6,23 @@ import DisplaySales from './DisplaySales';
 import EditSales from './EditSales'
 import firebase from '../../../firebase'
 import {useSales} from './DisplaySales'
+import SalesRecord from './SalesRecordInterface'
 
 export default () => {
+
     const [formModal, setFormModal] = useState(false)
     const toggleModal = () => setFormModal(!formModal)
 
     const [formModal2, setFormModal2] = useState(false);
     const toggleModal2 = () => setFormModal2(!formModal2); // for edit model 
-
-    const [editSalesRecordData, setEditSalesRecordData] = useState({
-        id: "",
-        item_name: "A name",
-        price: 2000,
-        quantity: 10
-    })
-
-    function handleEditClick(salesRecord : any){
-        setEditSalesRecordData(salesRecord)
+    
+    const [saleToEdit, setSaleToEdit] = useState<SalesRecord>({id: "", item_name: "", price: 0, quantity: 0, time: ""});
+    function handleEditClick(salesRecord : SalesRecord){
+        setSaleToEdit(salesRecord);
         toggleModal2();
     }
 
-    function handleDeleteClick(salesRecord : any){
+    function handleDeleteClick(salesRecord : SalesRecord){
         firebase.firestore().collection("inventoryItem").get()
         .then(snapshot => {
             snapshot.docs.forEach(doc => {
@@ -66,8 +62,7 @@ export default () => {
             <EditSales
                 toggleModal={toggleModal2}
                 formModal={formModal2}
-                salesRecordData = {editSalesRecordData}
-                getListItems = {useSales}
+                salesRecordData = {saleToEdit}
             />
         </Grid>
     )
