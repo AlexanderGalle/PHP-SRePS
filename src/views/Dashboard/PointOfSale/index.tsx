@@ -47,13 +47,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export default () => {
     const classes = useStyles();
 
-    const [number, setNumber] = useState<string>();
     
+    const [number, setNumber] = useState<string>("");
     const addNumber = (newNumber: string) => setNumber(number + newNumber);
-
-    //const clearNumber: any () => setNumber(""); // fix this
-
+    
+    
   return (
+    
     <Grid container>                    
       <Grid item md={2}>
           <Navigation />
