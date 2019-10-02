@@ -23,25 +23,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 
-    function clearBarcode() {
 
-    }
+    function fetchItemFromBarcode(barcode: string) {
+      //item = firebase.getItem(barcode);
 
-    function buttonHandler(num: number) {
-        if (num < 10) {
-            // append data to text field
-            alert(num);
-        }
-        else if (num == 10) {
-            // remove last digit from barcode ()
-            clearBarcode();
-            alert("Clear");
-            
-        } else if (num == 11) {
-            // submit data with barcode and fetch result
-            alert("Enter");
-        }
-        
+      //if item != null
+        //salesInventory.add(item) // adds item to the infentory list
+        //setNumber(""); // clears the barcode
+      // else alert("item not found")
+        alert(barcode);
       };
 
 export default () => {
@@ -49,7 +39,7 @@ export default () => {
 
     
     const [number, setNumber] = useState<string>("");
-    const addNumber = (newNumber: string) => setNumber(number + newNumber);
+    const addNumber = (newNumber: string) =>setNumber(number + newNumber);
     
     
   return (
@@ -89,9 +79,9 @@ export default () => {
             </div>
 
             <div>
-                <Button variant="contained" onClick={() => buttonHandler(11)} className={classes.button}>CLR</Button>
+                <Button variant="contained" onClick={() => setNumber("")} className={classes.button}>CLR</Button>
                 <Button variant="contained" onClick={() => addNumber("0")} className={classes.button}>0</Button>
-                <Button variant="contained" onClick={() => buttonHandler(11)} className={classes.button}>ENT</Button>
+                <Button variant="contained" onClick={() => fetchItemFromBarcode(number)} className={classes.button}>ENT</Button>
             </div>
             <p>{number}</p>
         </div>
