@@ -1,3 +1,10 @@
+/*
+    Display sales table generation by team oops DP2 Semester 2 2019.
+    Resources used:
+        material-ui table: https://material-ui.com/components/tables/
+        firebase/firestore collections: https://www.youtube.com/watch?v=rSgbYCdc4G0
+*/
+
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Table,
@@ -10,7 +17,7 @@ import React, {useState, useEffect} from 'react'
 import firebase from '../../../firebase';
 
 function useSales() {
-    const [sales, setSales] = useState([{id: ''}])
+    const [sales, setSales] = useState([{id: ''}]);
     
     useEffect(() => {
         const unsubscribe = firebase.firestore().collection('salesRecord')
@@ -41,36 +48,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
-const mapForTable = (row: any) => {
-    return (
-        <TableRow key = {row.item_name}>
-            <TableCell component = "th" scope = "row">
-                {row.item_name}
-            </TableCell>
-            <TableCell>${row.price}</TableCell>
-            <TableCell>{row.quantity}</TableCell>
-            <TableCell>${row.quantity * row.price}</TableCell>
-            <TableCell>{row.time}</TableCell>
-        </TableRow>
-    )
-}
-
 const DisplaySales = () => {
     const classes = useStyles();
     const sales = useSales();
 
     return (
         <div>
-            <h2>Sales list</h2>
-            <div>
-                <label>Sort by:</label>{' '}
-                <select>
-                    <option> Most Recent </option>
-                    <option> Least Recent </option>
-                    <option> Price (highest) </option>
-                </select>
-            </div>
+            <h2>Sales history</h2>
             <Paper className = {classes.root}>
                 <Table className = {classes.table}>
                     <TableHead>
@@ -83,7 +67,19 @@ const DisplaySales = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sales.map(mapForTable)}
+                        {sales.map((sale : any) => {
+                            return (
+                                <TableRow key = {sale.item_name}>
+                                    <TableCell component = "th" scope = "row">
+                                        {sale.item_name}
+                                    </TableCell>
+                                    <TableCell>${sale.price}</TableCell>
+                                    <TableCell>{sale.quantity}</TableCell>
+                                    <TableCell>${sale.quantity * sale.price}</TableCell>
+                                    <TableCell>{sale.time}</TableCell>
+                                </TableRow>
+                            )
+                        })}
                     </TableBody>
                 </Table>
             </Paper>
