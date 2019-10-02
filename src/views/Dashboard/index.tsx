@@ -5,6 +5,7 @@ import Dashboard from './Dashboard';
 import ProductList from './ProductList';
 import Inventory from './Inventory';
 import SalesRecord from './SalesRecord';
+import PointOfSale from './PointOfSale';
 
 export default () => (
     <BrowserRouter>
@@ -13,6 +14,7 @@ export default () => (
             <Route exact path='/tables' component={ProductList} />
             <Route exact path='/inventory' component={Inventory} />
             <Route exact path='/sales' component={SalesRecord}/>
+            <Route exact path='/pos' component={PointOfSale}/>
             <Route path='*'>
                 <Redirect to='/' />
             </Route>
