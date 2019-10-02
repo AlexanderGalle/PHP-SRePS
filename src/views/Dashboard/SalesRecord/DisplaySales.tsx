@@ -7,14 +7,18 @@
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
+    Grid,
     Table,
     TableHead,
     TableRow,
     TableCell,
     TableBody,
+    Fab,
     Paper} from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@material-ui/icons/Delete'
 import React, {useState, useEffect} from 'react'
-import firebase from '../../../firebase';
+import firebase from '../../../firebase'
 
 function useSales() {
     const [sales, setSales] = useState([{id: ''}]);
@@ -45,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     table: {
         minWidth: 650,
     },
+    fab: {
+        margin: theme.spacing(1),
+    },
 }));
 
 
@@ -71,6 +78,12 @@ const DisplaySales = () => {
                             return (
                                 <TableRow key = {sale.item_name}>
                                     <TableCell component = "th" scope = "row">
+                                        <Fab size = "small" aria-label="edit" className={classes.fab}>
+                                            <EditIcon />
+                                        </Fab>
+                                        <Fab size = "small" aria-label="delete" className={classes.fab}>
+                                            <DeleteIcon />
+                                        </Fab>
                                         {sale.item_name}
                                     </TableCell>
                                     <TableCell>${sale.price}</TableCell>
