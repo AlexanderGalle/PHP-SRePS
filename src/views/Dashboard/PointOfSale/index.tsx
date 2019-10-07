@@ -24,15 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 
-    function fetchItemFromBarcode(barcode: string) {
-      //item = firebase.getItem(barcode);
 
-      //if item != null
-        //salesInventory.add(item) // adds item to the infentory list
-        //setNumber(""); // clears the barcode
-      // else alert("item not found")
-        alert(barcode);
-      };
 
 export default () => {
     const classes = useStyles();
@@ -42,6 +34,18 @@ export default () => {
     const addNumber = (newNumber: string) =>setNumber(number + newNumber);
     
     
+    function fetchItemFromBarcode(barcode: string) {
+      //item = firebase.getItem(barcode);
+  
+      //if item != null
+        //salesInventory.add(item) // adds item to the infentory list
+        //setNumber(""); // clears the barcode
+      // else alert("item not found")
+        alert(barcode);
+  
+        setNumber("");
+      };
+
   return (
     
     <Grid container>                    

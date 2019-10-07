@@ -12,7 +12,7 @@ const InventoryAddItem = () => {
         firebase
             .firestore()
             .collection('items_test_a')
-            .add({
+            .doc().set({
                 name,
                 price: parseFloat(price),
                 quantity: parseInt(quantity)
