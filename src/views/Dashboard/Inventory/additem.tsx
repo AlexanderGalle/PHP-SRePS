@@ -12,8 +12,9 @@ const InventoryAddItem = () => {
         firebase
             .firestore()
             .collection('inventoryItem')
-            .doc(name)
+            .doc() // auto generate ID
             .set({
+                // generate barcode
                 name,
                 price: parseFloat(price),
                 quantity: parseInt(quantity)

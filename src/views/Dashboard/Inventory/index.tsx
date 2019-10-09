@@ -14,8 +14,8 @@ export default () => (
         <Grid item md={10}>
             <div>
                 <h1>Inventory</h1>
-                <InventoryDisplayItem/>
                 <InventoryAddItem/>
+                <InventoryDisplayItem/>
             </div>
         </Grid>
     </Grid>

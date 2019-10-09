@@ -7,7 +7,9 @@ import {
   Modal,
   Alert,
   Popover,
-  FormGroup
+  FormGroup,
+  CardText,
+  CardTitle
 } from "reactstrap";
 import firebase from "../../../firebase";
 import Product from "../../../models/Product";
@@ -35,6 +37,9 @@ export default ({
         name,
         price,
         quantity
+      })
+      .then(() => {
+        window.location.reload()
       });
   };
 
@@ -54,17 +59,15 @@ export default ({
       <div className="modal-body p-0">
         <Card className="bg-white shadow border-0">
           <CardHeader className="bg-transparent">
-            <h1>Edit Item</h1>
+            <h1>Edit Item:</h1>
+            <h4>{name}</h4>
           </CardHeader>
           <CardBody>
             <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField value={name} label="Name" />
+              <TextField defaultValue={price} label="Price" />
             </FormControl>
             <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField value={price} label="Price" />
-            </FormControl>
-            <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField value={quantity} label="Quantity" />
+              <TextField defaultValue={quantity} label="Quantity" />
             </FormControl>
           </CardBody>
           <CardFooter>
