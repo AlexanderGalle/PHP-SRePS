@@ -1,9 +1,15 @@
-import React from "react";
-import { Card, CardBody, CardHeader, Modal} from "reactstrap";
+import React, { useState } from "react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Modal,
+  Label,
+  ButtonGroup
+} from "reactstrap";
 import firebase from "../../../firebase";
-var name = "";
-var price = "";
-var quantity = "";
+import { Input, Button, TextField, FormGroup } from "@material-ui/core";
+import undefined from "firebase/empty-import";
 
 export default ({
   formModal,
@@ -14,13 +20,17 @@ export default ({
   toggleModal: Function;
   getListItems: Function;
 }) => {
+  const [name, setName] = useState<string>();
+  const [price, setPrice] = useState<number>();
+  const [quantity, setQuantity] = useState<number>();
+
   function AddItem() {
     addItem();
   }
 
   async function addItem() {
     console.log(name + " " + price + " " + quantity);
-    if (name !== "" && price !== "" && quantity !== "") {
+    if (name && price && quantity) {
       try {
         const salesRecord = firebase.firestore().collection("salesRecord");
         const inventoryItem = firebase.firestore().collection("inventoryItem");
@@ -31,8 +41,8 @@ export default ({
 
         await salesRecord.doc(newRecord.id).set({
           item_name: name,
-          price: parseFloat(price),
-          quantity: parseInt(quantity),
+          price: price,
+          quantity: quantity,
           id: newRecord.id
         });
 
@@ -41,13 +51,13 @@ export default ({
         await inventoryItem.get().then(snapshot => {
           snapshot.docs.forEach(doc => {
             if (doc.data().name == name) {
-              let reference = doc.data().id;
+              let reference = doc.id;
               const reset = firebase
                 .firestore()
                 .collection("inventoryItem")
-                .doc(reference.trim());
+                .doc(reference);
               console.log("Names are equal");
-              var newQuantity = doc.data().quantity - parseInt(quantity);
+              var newQuantity = doc.data().quantity - quantity;
               reset
                 .update({ quantity: newQuantity })
                 .then(function() {
@@ -56,12 +66,13 @@ export default ({
                 .catch(function(error) {
                   console.log(error);
                 });
-              name = "";
-              price = "";
-              quantity = "";
+              setName("");
+              setPrice(0);
+              setQuantity(0);
             }
           });
         });
+
         toggleModal(false);
         getListItems();
       } catch (e) {
@@ -69,10 +80,25 @@ export default ({
       } finally {
         //does this last even if error is caught
       }
-    } else if (name == "" || price == "" || quantity == "") {
+    } else if (!name || !price || !quantity) {
       alert("Please fill out all fields");
     }
   }
+
+  const handlePriceInput = (value: number) => {
+    if (value > 0) {
+      setPrice(value);
+    } else {
+      setPrice(0);
+    }
+  };
+  const handleQuantityInput = (value: number) => {
+    if (value > 0) {
+      setQuantity(value);
+    } else {
+      setQuantity(0);
+    }
+  };
 
   return (
     <Modal
@@ -87,35 +113,57 @@ export default ({
             <h1>Add Item to Sales Record</h1>
           </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">
-            <label>
-              Item Name
-              <input
+            <FormGroup>
+              <TextField
                 type="text"
+                label="Name"
                 id="name"
-                onChange={e => (name = e.currentTarget.value)}
+                onChange={e => setName(e.currentTarget.value)}
               />
-            </label>
-            <label>
-              Price
-              <input
+            </FormGroup>
+            <FormGroup>
+              <TextField
+                label="Price"
                 type="number"
-                min="0"
                 id="price"
-                onChange={e => (price = e.currentTarget.value)}
+                onChange={e =>
+                  handlePriceInput(parseInt(e.currentTarget.value))
+                }
               />
-            </label>
-            <label>
-              Quantity
-              <input
+            </FormGroup>
+            <FormGroup>
+              <TextField
                 type="number"
-                min="0"
+                label="Quantity"
                 id="quantity"
-                onChange={e => (quantity = e.currentTarget.value)}
+                onChange={e =>
+                  handleQuantityInput(parseInt(e.currentTarget.value))
+                }
               />
-            </label>
-            <button type="button" id="submit" onClick={() => AddItem()}>
-              Add
-            </button>
+            </FormGroup>
+            <FormGroup>
+              <TextField
+                type="Date"
+                id="date"
+                //onChange={e =>
+                //  handleQuantityInput(parseInt(e.currentTarget.value))
+                //}
+                style={{ marginTop: 20 }}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Button
+                variant="contained"
+                color="primary"
+                type="button"
+                fullWidth={true}
+                id="submit"
+                onClick={() => AddItem()}
+                style={{ marginTop: 20 }}
+              >
+                Add
+              </Button>
+            </FormGroup>
           </CardBody>
         </Card>
       </div>
