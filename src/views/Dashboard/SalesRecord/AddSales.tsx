@@ -9,8 +9,6 @@ import {
 } from "reactstrap";
 import firebase from "../../../firebase";
 import { Input, Button, TextField, FormGroup } from "@material-ui/core";
-import undefined from "firebase/empty-import";
-import { string } from "prop-types";
 
 export default ({
   formModal,
@@ -24,7 +22,7 @@ export default ({
   const [name, setName] = useState<string>();
   const [price, setPrice] = useState<number>();
   const [quantity, setQuantity] = useState<number>();
-  const [date, setDate] = useState<string>();
+  const [date, setDate] = useState<firebase.firestore.Timestamp>();
 
   function AddItem() {
     addItem();
@@ -104,23 +102,8 @@ export default ({
   };
 
   useEffect(() => {
-    setDate(GetCurrentDate());
+    setDate(firebase.firestore.Timestamp.now());
   }, []);
-
-  const GetCurrentDate = () => {
-    var day = new Date().getDate().toString();
-    var month = (new Date().getMonth() + 1).toString();
-    var year = new Date().getFullYear().toString();
-
-    if (month.toString().length < 2) {
-      month = "0" + month.toString();
-    }
-    if (day.length < 2) {
-      day = "0" + day;
-    }
-    var cDate = year + "-" + month + "-" + day;
-    return cDate;
-  };
 
   return (
     <Modal
@@ -167,7 +150,7 @@ export default ({
               <TextField
                 type="Date"
                 defaultValue={date}
-                onChange={e => setDate(e.currentTarget.value)}
+                onChange={e => setDate(firebase.firestore.Timestamp.fromDate(new Date(e.currentTarget.value)))}
                 style={{ marginTop: 20 }}
               />
             </FormGroup>

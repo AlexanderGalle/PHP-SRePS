@@ -17,7 +17,7 @@ export default ({
   const [price, setPrice] = useState<number>(salesRecordData.price);
   const [quantity, setQuantity] = useState<number>(salesRecordData.quantity);
   const [id, setId] = useState<string>(salesRecordData.id);
-  const [date, setDate] = useState<string>(salesRecordData.date);
+  const [date, setDate] = useState<firebase.firestore.Timestamp>(salesRecordData.date);
 
   useEffect(() => {
     setName(salesRecordData.item_name);
@@ -113,8 +113,8 @@ export default ({
                 type="Date"
                 id="date"
                 label="Date"
-                value={date}
-                onChange={e => setDate(e.currentTarget.value)}
+                value={date.toDate().toISOString().split("T")[0]}
+                onChange={e => setDate(firebase.firestore.Timestamp.fromDate(new Date(e.currentTarget.value)))}
                 style={{ marginTop: 20 }}
               />
             </FormGroup>

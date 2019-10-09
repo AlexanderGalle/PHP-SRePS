@@ -20,7 +20,7 @@ export default () => {
     item_name: "",
     price: 0,
     quantity: 0,
-    date: ""
+    date: firebase.firestore.Timestamp.fromMillis(0)
   });
   function handleEditClick(salesRecord: SalesRecord) {
     setSaleToEdit(salesRecord);

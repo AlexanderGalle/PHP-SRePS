@@ -32,6 +32,7 @@ export function useSales() {
       .onSnapshot(snapshot => {
         setSales(
           snapshot.docs.map(doc => {
+            console.log(doc.data().date);
             return {
               id: doc.id,
               ...doc.data()
@@ -82,7 +83,7 @@ const DisplaySales = ({
               <TableCell>Qty purchased</TableCell>
               <TableCell>Total price</TableCell>
               <TableCell>Transaction Date</TableCell>
-              <TableCell> </TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -95,7 +96,7 @@ const DisplaySales = ({
                   <TableCell>${sale.price}</TableCell>
                   <TableCell>{sale.quantity}</TableCell>
                   <TableCell>${sale.quantity * sale.price}</TableCell>
-                  <TableCell>{sale.date}</TableCell>
+                  <TableCell>{sale.date ? sale.date.toDate().toLocaleDateString("en-AU") : ""}</TableCell>
                   <TableCell>
                     <Fab
                       size="small"
