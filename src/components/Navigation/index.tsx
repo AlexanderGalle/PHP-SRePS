@@ -17,6 +17,9 @@ export default () => (
             <Link to='/sales'>Sales Record</Link>
         </ListItem>
         <ListItem>
+            <Link to='/predict'>Predict Sales</Link>
+        </ListItem>
+        <ListItem>
             <Link to='/pos'>Point of Sales</Link>
         </ListItem>
     </List>

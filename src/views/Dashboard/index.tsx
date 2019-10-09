@@ -6,6 +6,7 @@ import ProductList from './ProductList';
 import Inventory from './Inventory';
 import SalesRecord from './SalesRecord';
 import PointOfSale from './PointOfSale';
+import SalesPrediction from './SalesPrediction';
 
 export default () => (
     <BrowserRouter>
@@ -15,6 +16,7 @@ export default () => (
             <Route exact path='/inventory' component={Inventory} />
             <Route exact path='/sales' component={SalesRecord}/>
             <Route exact path='/pos' component={PointOfSale}/>
+            <Route exact path='/predict' component = {SalesPrediction}/>
             <Route path='*'>
                 <Redirect to='/' />
             </Route>
