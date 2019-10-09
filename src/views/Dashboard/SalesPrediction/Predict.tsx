@@ -9,7 +9,7 @@ import {
     Fab,
     Paper} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-const SALES_HISTORY_LENGTH = 28;
+const SALES_HISTORY_LENGTH = 7
 
 function getDate(days: number) : Date   //  days is number of days ago.
 {
@@ -76,7 +76,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default () => {
-    const items = useItems();
+    const items = useItems().map(item => {
+        return {    name: item.name,
+                    quantity: item.quantity,
+                    weeklySales: Math.round(item.unitsSold/(SALES_HISTORY_LENGTH/7)),
+                    monthlySales: Math.round(item.unitsSold/(SALES_HISTORY_LENGTH/28)),
+                    stockDepleted: item.unitsSold != 0 
+                                    ? getDate(Math.floor(item.quantity / (item.unitsSold/SALES_HISTORY_LENGTH))).toLocaleDateString("en-AU") 
+                                    : "Never"}
+    });
     const classes = useStyles();
     
     return (
@@ -90,7 +98,7 @@ export default () => {
                             <TableCell>Quanitity</TableCell>
                             <TableCell>Weekly Sales Estimate</TableCell>
                             <TableCell>Monthly Sales Estimate</TableCell>
-                            <TableCell>Out of stock by</TableCell>
+                            <TableCell>Stock depleted by</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -101,11 +109,9 @@ export default () => {
                                         {item.name}
                                     </TableCell>
                                     <TableCell>{item.quantity}</TableCell>
-                                    <TableCell>{item.unitsSold/Math.round(SALES_HISTORY_LENGTH/7)}</TableCell>
-                                    <TableCell>{item.unitsSold/Math.round(SALES_HISTORY_LENGTH/28)}</TableCell>
-                                    <TableCell>{item.unitsSold != 0 
-                                                    ? getDate(Math.floor(item.quantity / (item.unitsSold/SALES_HISTORY_LENGTH))).toLocaleDateString("en-AU") 
-                                                    : "Never"}</TableCell>
+                                    <TableCell>{item.weeklySales}</TableCell>
+                                    <TableCell>{item.monthlySales}</TableCell>
+                                    <TableCell>{item.stockDepleted}</TableCell>
                                 </TableRow>
                             )
                         })}
