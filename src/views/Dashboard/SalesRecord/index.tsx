@@ -20,7 +20,7 @@ export default () => {
     item_name: "",
     price: 0,
     quantity: 0,
-    time: ""
+    date: ""
   });
   function handleEditClick(salesRecord: SalesRecord) {
     setSaleToEdit(salesRecord);

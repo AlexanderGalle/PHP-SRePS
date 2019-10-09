@@ -13,7 +13,8 @@ import {
   TableCell,
   TableBody,
   Fab,
-  Paper
+  Paper,
+  Tab
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -80,7 +81,7 @@ const DisplaySales = ({
               <TableCell>Item price</TableCell>
               <TableCell>Qty purchased</TableCell>
               <TableCell>Total price</TableCell>
-              <TableCell>Transaction time</TableCell>
+              <TableCell>Transaction Date</TableCell>
               <TableCell> </TableCell>
             </TableRow>
           </TableHead>
@@ -94,7 +95,7 @@ const DisplaySales = ({
                   <TableCell>${sale.price}</TableCell>
                   <TableCell>{sale.quantity}</TableCell>
                   <TableCell>${sale.quantity * sale.price}</TableCell>
-                  <TableCell>{sale.time}</TableCell>
+                  <TableCell>{sale.date}</TableCell>
                   <TableCell>
                     <Fab
                       size="small"

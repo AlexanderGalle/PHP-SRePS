@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -10,6 +10,7 @@ import {
 import firebase from "../../../firebase";
 import { Input, Button, TextField, FormGroup } from "@material-ui/core";
 import undefined from "firebase/empty-import";
+import { string } from "prop-types";
 
 export default ({
   formModal,
@@ -23,14 +24,15 @@ export default ({
   const [name, setName] = useState<string>();
   const [price, setPrice] = useState<number>();
   const [quantity, setQuantity] = useState<number>();
+  const [date, setDate] = useState<string>();
 
   function AddItem() {
     addItem();
   }
 
   async function addItem() {
-    console.log(name + " " + price + " " + quantity);
-    if (name && price && quantity) {
+    console.log(name + " " + price + " " + quantity + " " + date);
+    if (name && price && quantity && date) {
       try {
         const salesRecord = firebase.firestore().collection("salesRecord");
         const inventoryItem = firebase.firestore().collection("inventoryItem");
@@ -43,6 +45,7 @@ export default ({
           item_name: name,
           price: price,
           quantity: quantity,
+          date: date,
           id: newRecord.id
         });
 
@@ -80,7 +83,7 @@ export default ({
       } finally {
         //does this last even if error is caught
       }
-    } else if (!name || !price || !quantity) {
+    } else if (!name || !price || !quantity || !date) {
       alert("Please fill out all fields");
     }
   }
@@ -98,6 +101,25 @@ export default ({
     } else {
       setQuantity(0);
     }
+  };
+
+  useEffect(() => {
+    setDate(GetCurrentDate());
+  }, []);
+
+  const GetCurrentDate = () => {
+    var day = new Date().getDate().toString();
+    var month = (new Date().getMonth() + 1).toString();
+    var year = new Date().getFullYear().toString();
+
+    if (month.toString().length < 2) {
+      month = "0" + month.toString();
+    }
+    if (day.length < 2) {
+      day = "0" + day;
+    }
+    var cDate = year + "-" + month + "-" + day;
+    return cDate;
   };
 
   return (
@@ -118,7 +140,7 @@ export default ({
                 type="text"
                 label="Name"
                 id="name"
-                onChange={e => setName(e.currentTarget.value)}
+                onChange={e => setName(e.currentTarget.value.toLowerCase())}
               />
             </FormGroup>
             <FormGroup>
@@ -144,10 +166,8 @@ export default ({
             <FormGroup>
               <TextField
                 type="Date"
-                id="date"
-                //onChange={e =>
-                //  handleQuantityInput(parseInt(e.currentTarget.value))
-                //}
+                defaultValue={date}
+                onChange={e => setDate(e.currentTarget.value)}
                 style={{ marginTop: 20 }}
               />
             </FormGroup>
