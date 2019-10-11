@@ -74,8 +74,8 @@ const DisplaySales = ({
   return (
     <div>
       <h2>Sales history</h2>
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
+      <Paper>
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell>Item name</TableCell>
@@ -96,7 +96,9 @@ const DisplaySales = ({
                   <TableCell>${sale.price}</TableCell>
                   <TableCell>{sale.quantity}</TableCell>
                   <TableCell>${sale.quantity * sale.price}</TableCell>
-                  <TableCell>{sale.date ? sale.date.toDate().toLocaleDateString("en-AU") : ""}</TableCell>
+                  <TableCell>
+                    {sale.date ? sale.date.toDate().toLocaleDateString("en-AU") : ""}
+                  </TableCell>
                   <TableCell>
                     <Fab
                       size="small"

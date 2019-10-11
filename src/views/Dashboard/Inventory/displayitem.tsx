@@ -41,7 +41,7 @@ export default () => {
 
   return (
     <div>
-      <h3>Display</h3>
+      <h2>Display</h2>
       <Paper>
         <Table>
           <TableHead>
