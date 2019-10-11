@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { List, ListItem } from "@material-ui/core";
+import { List, ListItem, Button } from "@material-ui/core";
 import "./styles.css";
+import firebase from "firebase";
 
 const style = {
   navigationLink: {
@@ -37,6 +38,17 @@ export default () => (
       <Link to="/pos" style={style.navigationLink}>
         Point of Sales
       </Link>
+    </ListItem>
+    <ListItem>
+      <Button
+        variant="contained"
+        fullWidth={true}
+        color="primary"
+        style={{ marginTop: 60 }}
+        onClick={() => firebase.auth().signOut()}
+      >
+        Logout
+      </Button>
     </ListItem>
   </List>
 );
