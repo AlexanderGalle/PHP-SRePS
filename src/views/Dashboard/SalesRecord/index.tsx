@@ -66,9 +66,10 @@ export default () => {
       <Grid item md={2}>
         <Navigation />
       </Grid>
-      <Grid item md={10}>
+      <Grid item md={10} style={{ padding: 40 }}>
         <h1 style={{ textAlign: "center", fontSize: 35 }}>Sales Record</h1>
         <Button
+          variant="contained"
           color="primary"
           id="addButton"
           style={{ position: "absolute", right: 43, top: 20 }}
@@ -76,21 +77,10 @@ export default () => {
         >
           Add to Sales Record
         </Button>
-        <DisplaySales
-          handleEditClick={handleEditClick}
-          handleDeleteClick={handleDeleteClick}
-        />
+        <DisplaySales handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick} />
       </Grid>
-      <AddSales
-        toggleModal={toggleModal}
-        formModal={formModal}
-        getListItems={useSales}
-      />
-      <EditSales
-        toggleModal={toggleModal2}
-        formModal={formModal2}
-        salesRecordData={saleToEdit}
-      />
+      <AddSales toggleModal={toggleModal} formModal={formModal} getListItems={useSales} />
+      <EditSales toggleModal={toggleModal2} formModal={formModal2} salesRecordData={saleToEdit} />
     </Grid>
   );
 };
