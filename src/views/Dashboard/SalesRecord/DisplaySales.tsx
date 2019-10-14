@@ -5,23 +5,20 @@
         firebase/firestore collections: https://www.youtube.com/watch?v=rSgbYCdc4G0
 */
 
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Fab,
-  Paper,
-  Tab
+  Paper
 } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import {EditButton, DeleteButton} from '../../../components/Actions'
+import PaginationFooter from '../../../components/Pagination'
 import React, { useState, useEffect } from "react";
 import firebase from "../../../firebase";
 
-export function useSales(limit?: number, startAt?: any) {
+export function useSales(limit?: number) {
   const [sales, setSales] = useState([{ id: "" }]);
 
   useEffect(() => {
@@ -29,11 +26,9 @@ export function useSales(limit?: number, startAt?: any) {
       .firestore()
       .collection("salesRecord")
       .orderBy("date");
-    if(startAt != null)
-      salesRef = salesRef.startAt(startAt);
-    if(limit)
-      salesRef = salesRef.limit(limit);
 
+    if(limit)
+      salesRef = salesRef.limit(limit)
 
     const unsubscribe = salesRef.onSnapshot(snapshot => {
         setSales(
@@ -53,21 +48,7 @@ export function useSales(limit?: number, startAt?: any) {
   return sales;
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%",
-    marginTop: theme.spacing(3),
-    overflowX: "auto"
-  },
-  table: {
-    minWidth: 650
-  },
-  fab: {
-    margin: theme.spacing(1)
-  }
-}));
-
-const DisplaySales = ({
+export default function DisplaySales({
   handleDeleteClick,
   handleEditClick,
   limit
@@ -75,28 +56,10 @@ const DisplaySales = ({
   handleDeleteClick?: Function;
   handleEditClick?: Function;
   limit?: number;
-}) => {
-  const classes = useStyles();
+}){
   const sales = useSales(limit);
-
-  const Actions = ({sale} : {sale?: any}) : JSX.Element => {
-    if(handleDeleteClick == undefined || handleEditClick == undefined)
-      return (<div/>);
-    return sale ? 
-      (<TableCell>
-        <Fab  size = "small"
-              arai-label = "edit"
-              className = {classes.fab}
-              onClick = {() => handleEditClick(sale)}
-              ><EditIcon/></Fab>
-        <Fab  size = "small"
-              arai-label = "delete"
-              className = {classes.fab}
-              onClick = {() => handleDeleteClick(sale)}
-              ><DeleteIcon/></Fab>
-      </TableCell>)
-    : (<TableCell>Action</TableCell>);
-  }
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   return (
     <div>
@@ -110,11 +73,11 @@ const DisplaySales = ({
               <TableCell>Qty purchased</TableCell>
               <TableCell>Total price</TableCell>
               <TableCell>Transaction Date</TableCell>
-              <Actions/>
+              {handleDeleteClick != undefined && handleEditClick != undefined ? (<TableCell>Action</TableCell>) : null}
             </TableRow>
           </TableHead>
           <TableBody>
-            {sales.map((sale: any) => {
+            {sales.slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).map((sale: any) => {
               return (
                 <TableRow key={sale.id}>
                   <TableCell component="th" scope="row">
@@ -126,15 +89,23 @@ const DisplaySales = ({
                   <TableCell>
                     {sale.date ? sale.date.toDate().toLocaleDateString("en-AU") : ""}
                   </TableCell>
-                  <Actions sale={sale}/>
+                  {handleDeleteClick != undefined && handleEditClick != undefined ? (<TableCell>
+                                  <EditButton sale = {sale} onClick = {handleEditClick}/>        
+                                  <DeleteButton sale = {sale} onClick = {handleDeleteClick}/>
+                                </TableCell>) : null}
                 </TableRow>
               );
             })}
           </TableBody>
+          <PaginationFooter
+              count={sales.length} 
+              page={page} setPage={setPage}
+              rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage}/>
         </Table>
       </Paper>
     </div>
   );
+
 };
 
-export default DisplaySales;
+
