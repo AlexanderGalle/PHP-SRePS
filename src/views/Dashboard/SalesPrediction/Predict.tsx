@@ -89,7 +89,6 @@ export default () => {
     
     return (
         <div>
-            <h2>Sales Prediction</h2>
             <Paper className = {classes.root}>
                 <Table className = {classes.table}>
                     <TableHead>
