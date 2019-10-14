@@ -11,7 +11,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Paper
+  Paper,
+  Grid,
+  TextField
 } from "@material-ui/core";
 import {EditButton, DeleteButton} from '../../../components/Actions'
 import PaginationFooter from '../../../components/Pagination'
@@ -60,10 +62,22 @@ export default function DisplaySales({
   const sales = useSales(limit);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [query, setQuery] = useState("");
+
+  const salesFilter = (sale : any) => {
+    return  !(query && sale.id)
+          ||(   sale.item_name.toLowerCase().includes(query)
+            ||  (sale.date && sale.date.toDate().toLocaleDateString("en-AU").includes(query))
+            ||  sale.price.toString().includes(query)
+            ||  sale.quantity.toString().includes(query)
+            ||  (sale.price * sale.quantity).toString().includes(query)
+            );
+  }
 
   return (
     <div>
-      <h2>Sales history</h2>
+      <TextField label = "Search" value = {query}
+                onChange = {(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value.toLowerCase())}/>
       <Paper>
         <Table>
           <TableHead>
@@ -77,7 +91,7 @@ export default function DisplaySales({
             </TableRow>
           </TableHead>
           <TableBody>
-            {sales.slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).map((sale: any) => {
+            {sales.filter(salesFilter).slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).map((sale: any) => {
               return (
                 <TableRow key={sale.id}>
                   <TableCell component="th" scope="row">
