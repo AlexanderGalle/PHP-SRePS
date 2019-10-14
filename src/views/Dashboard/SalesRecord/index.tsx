@@ -28,37 +28,16 @@ export default () => {
   }
 
   function handleDeleteClick(salesRecord: SalesRecord) {
-    firebase
+    let invRef = firebase
       .firestore()
-      .collection("inventoryItem")
-      .get()
-      .then(snapshot => {
-        snapshot.docs.forEach(doc => {
-          if (doc.data().name === salesRecord.item_name) {
-            let reference = doc.id;
-            var newQuantity = doc.data().quantity + salesRecord.quantity;
+      .collection("inventoryItem");
 
-            return firebase
-              .firestore()
-              .collection("inventoryItem")
-              .doc(reference)
-              .update({ quantity: newQuantity })
-              .then(() =>
-                firebase
-                  .firestore()
-                  .collection("salesRecord")
-                  .doc(salesRecord.id)
-                  .delete()
-              );
-          } else
-            firebase
-              .firestore()
-              .collection("salesRecord")
-              .doc(salesRecord.id)
-              .delete();
-        });
-      })
-      .catch(err => alert(err));
+    invRef.where("name", "==" ,salesRecord.item_name).get().then(snapshot => {
+        snapshot.docs.forEach(doc => 
+          invRef.doc(doc.id).update({quantity : doc.data().quantity + salesRecord.quantity}));
+    }).catch(err => alert(err));
+
+    firebase.firestore().collection("salesRecord").doc(salesRecord.id).delete();
   }
 
   return (
@@ -77,7 +56,7 @@ export default () => {
         >
           Add to Sales Record
         </Button>
-        <DisplaySales handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick} />
+        <DisplaySales handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick}/>
       </Grid>
       <AddSales toggleModal={toggleModal} formModal={formModal} getListItems={useSales} />
       <EditSales toggleModal={toggleModal2} formModal={formModal2} salesRecordData={saleToEdit} />

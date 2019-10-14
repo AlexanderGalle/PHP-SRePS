@@ -113,7 +113,7 @@ export default ({
                 type="Date"
                 id="date"
                 label="Date"
-                value={date.toDate().toISOString().split("T")[0]}
+                value={date ? date.toDate().toISOString().split("T")[0] : null}
                 onChange={e => setDate(firebase.firestore.Timestamp.fromDate(new Date(e.currentTarget.value)))}
                 style={{ marginTop: 20 }}
               />

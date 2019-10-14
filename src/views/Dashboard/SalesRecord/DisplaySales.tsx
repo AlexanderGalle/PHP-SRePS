@@ -20,16 +20,22 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import React, { useState, useEffect } from "react";
 import firebase from "../../../firebase";
-import Index from "./index";
 
-export function useSales() {
+export function useSales(limit?: number, startAt?: any) {
   const [sales, setSales] = useState([{ id: "" }]);
 
   useEffect(() => {
-    const unsubscribe = firebase
+    let salesRef = firebase
       .firestore()
       .collection("salesRecord")
-      .onSnapshot(snapshot => {
+      .orderBy("date");
+    if(startAt != null)
+      salesRef = salesRef.startAt(startAt);
+    if(limit)
+      salesRef = salesRef.limit(limit);
+
+
+    const unsubscribe = salesRef.onSnapshot(snapshot => {
         setSales(
           snapshot.docs.map(doc => {
             console.log(doc.data().date);
@@ -63,13 +69,34 @@ const useStyles = makeStyles(theme => ({
 
 const DisplaySales = ({
   handleDeleteClick,
-  handleEditClick
+  handleEditClick,
+  limit
 }: {
-  handleDeleteClick: Function;
-  handleEditClick: Function;
+  handleDeleteClick?: Function;
+  handleEditClick?: Function;
+  limit?: number;
 }) => {
   const classes = useStyles();
-  const sales = useSales();
+  const sales = useSales(limit);
+
+  const Actions = ({sale} : {sale?: any}) : JSX.Element => {
+    if(handleDeleteClick == undefined || handleEditClick == undefined)
+      return (<div/>);
+    return sale ? 
+      (<TableCell>
+        <Fab  size = "small"
+              arai-label = "edit"
+              className = {classes.fab}
+              onClick = {() => handleEditClick(sale)}
+              ><EditIcon/></Fab>
+        <Fab  size = "small"
+              arai-label = "delete"
+              className = {classes.fab}
+              onClick = {() => handleDeleteClick(sale)}
+              ><DeleteIcon/></Fab>
+      </TableCell>)
+    : (<TableCell>Action</TableCell>);
+  }
 
   return (
     <div>
@@ -83,7 +110,7 @@ const DisplaySales = ({
               <TableCell>Qty purchased</TableCell>
               <TableCell>Total price</TableCell>
               <TableCell>Transaction Date</TableCell>
-              <TableCell>Action</TableCell>
+              <Actions/>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -99,24 +126,7 @@ const DisplaySales = ({
                   <TableCell>
                     {sale.date ? sale.date.toDate().toLocaleDateString("en-AU") : ""}
                   </TableCell>
-                  <TableCell>
-                    <Fab
-                      size="small"
-                      aria-label="edit"
-                      className={classes.fab}
-                      onClick={() => handleEditClick(sale)}
-                    >
-                      <EditIcon />
-                    </Fab>
-                    <Fab
-                      size="small"
-                      aria-label="delete"
-                      className={classes.fab}
-                      onClick={() => handleDeleteClick(sale)}
-                    >
-                      <DeleteIcon />
-                    </Fab>
-                  </TableCell>
+                  <Actions sale={sale}/>
                 </TableRow>
               );
             })}
