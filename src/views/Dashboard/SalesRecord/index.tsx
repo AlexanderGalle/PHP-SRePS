@@ -46,7 +46,7 @@ export default () => {
         <Navigation />
       </Grid>
       <Grid item md={10} style={{ padding: 40 }}>
-        <h1 style={{ textAlign: "center", fontSize: 35 }}>Sales Record</h1>
+        <h1 style={{ textAlign: "center", fontSize: 35 }}>Sales Records</h1>
         <Button
           variant="contained"
           color="primary"
