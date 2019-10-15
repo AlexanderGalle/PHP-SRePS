@@ -12,7 +12,6 @@ import {
   TableCell,
   TableBody,
   Paper,
-  Grid,
   TextField
 } from "@material-ui/core";
 import {EditButton, DeleteButton} from '../../../components/Actions'
@@ -91,7 +90,7 @@ export default function DisplaySales({
             </TableRow>
           </TableHead>
           <TableBody>
-            {sales.filter(salesFilter).slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).map((sale: any) => {
+            {sales.slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).filter(salesFilter).map((sale: any) => {
               return (
                 <TableRow key={sale.id}>
                   <TableCell component="th" scope="row">

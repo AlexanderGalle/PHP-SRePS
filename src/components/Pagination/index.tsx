@@ -11,7 +11,7 @@
                 const [page, setPage] = useState(0);
                 const [rowsPerPage, setRowsPerPage] = React.useState(5);    
         
-        Create Pagenation element in html return, passing in the number of items and useState variables
+        Create Pagenation element in html just below TableBody, passing in the number of items and useState variables
                 <Pagenation 
                     count = {items.length}
                     page = {page}   setPage = {setPage}

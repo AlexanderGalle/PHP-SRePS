@@ -6,9 +6,10 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    Fab,
+    TextField,
     Paper} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import PaginationFooter from '../../../components/Pagination'
 const SALES_HISTORY_LENGTH = 7
 
 function getDate(days: number) : Date   //  days is number of days ago.
@@ -76,6 +77,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default () => {
+    const classes = useStyles();
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [query, setQuery] = useState("");
+
     const items = useItems().map(item => {
         return {    name: item.name,
                     quantity: item.quantity,
@@ -85,10 +91,21 @@ export default () => {
                                     ? getDate(Math.floor(item.quantity / (item.unitsSold/SALES_HISTORY_LENGTH))).toLocaleDateString("en-AU") 
                                     : "Never"}
     });
-    const classes = useStyles();
+
+    const itemsFilter = (item : any) => {
+        return  !(query && item.name)
+              ||(   item.name.toLowerCase().includes(query)
+                ||  item.quantity.toString().includes(query)
+                ||  item.weeklySales.toString().includes(query)
+                ||  item.monthlySales.toString().includes(query)
+                ||  item.stockDepleted.toString().includes(query)
+                );
+      }    
     
     return (
         <div>
+            <TextField label = "Search" value = {query}
+                onChange = {(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value.toLowerCase())}/>
             <Paper className = {classes.root}>
                 <Table className = {classes.table}>
                     <TableHead>
@@ -101,7 +118,7 @@ export default () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {items.map((item : any) => {
+                        {items.slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).filter(itemsFilter).map((item : any) => {
                             return (
                                 <TableRow key = {item.name}>
                                     <TableCell component = "th" scope = "row">
@@ -115,6 +132,10 @@ export default () => {
                             )
                         })}
                     </TableBody>
+                    <PaginationFooter
+                        count={items.length} 
+                        page={page} setPage={setPage}
+                        rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage}/>
                 </Table>
             </Paper>
         </div>
