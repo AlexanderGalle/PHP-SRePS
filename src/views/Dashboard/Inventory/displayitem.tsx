@@ -4,8 +4,11 @@ import InventoryEditItem from "./edititem";
 import { Paper, Table, TableHead, TableCell, TableRow, TableBody } from "@material-ui/core";
 import Product from "../../../models/Product";
 import ProductItem from "./ProductItem";
+import PaginationFooter from '../../../components/Pagination'
 
 export default () => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [formModal, setFormModal] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<number>();
@@ -55,13 +58,17 @@ export default () => {
           </TableHead>
           <TableBody>
             {products ? (
-              products.map((product, index) => (
-                <ProductItem index={index} product={product} toggleEditItem={toggleEditItem} />
+              products.slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
+                <ProductItem index={index + (page * rowsPerPage)} product={product} toggleEditItem={toggleEditItem} />
               ))
             ) : (
               <> </>
             )}
           </TableBody>
+          <PaginationFooter
+              count={products.length} 
+              page={page} setPage={setPage}
+              rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage}/>
         </Table>
         <InventoryEditItem
           toggleModal={toggleModal}
