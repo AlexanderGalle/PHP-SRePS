@@ -1,8 +1,8 @@
 import React from "react";
 import { TableRow, TableCell, Fab } from "@material-ui/core";
 import Product from "../../../models/Product";
-import { Button } from "reactstrap";
-import EditIcon from "@material-ui/icons/Edit";
+import {EditButton} from '../../../components/Actions'
+
 
 export default ({
   index,
@@ -20,9 +20,7 @@ export default ({
       <TableCell>{product.price}</TableCell>
       <TableCell>{product.quantity}</TableCell>
       <TableCell>
-        <Fab aria-label="edit" onClick={() => toggleEditItem(index)}>
-          <EditIcon />
-        </Fab>
+        <EditButton onClick = {() => toggleEditItem(index)}/>
       </TableCell>
     </TableRow>
   );

@@ -103,8 +103,8 @@ export default function DisplaySales({
                     {sale.date ? sale.date.toDate().toLocaleDateString("en-AU") : ""}
                   </TableCell>
                   {handleDeleteClick != undefined && handleEditClick != undefined ? (<TableCell>
-                                  <EditButton sale = {sale} onClick = {handleEditClick}/>        
-                                  <DeleteButton sale = {sale} onClick = {handleDeleteClick}/>
+                                  <EditButton onClick = {() => handleEditClick(sale)}/>        
+                                  <DeleteButton onClick = {() => handleDeleteClick(sale)}/>
                                 </TableCell>) : null}
                 </TableRow>
               );

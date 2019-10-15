@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export function DeleteButton({sale, onClick}: {sale: any, onClick: Function})
+export function DeleteButton({onClick}: {onClick: Function})
 {
     const classes = useStyles();
     
@@ -47,12 +47,12 @@ export function DeleteButton({sale, onClick}: {sale: any, onClick: Function})
         <Fab    size = "small"
                 arai-label = "delete"
                 className = {classes.fab}
-                onClick = {() => onClick(sale)}
+                onClick = {() => onClick()}
         ><DeleteIcon/></Fab>
     );
 }
 
-export function EditButton({sale, onClick} : {sale: any, onClick: Function})
+export function EditButton({onClick} : {onClick: Function})
 {
     const classes = useStyles();
     
@@ -60,7 +60,7 @@ export function EditButton({sale, onClick} : {sale: any, onClick: Function})
         <Fab    size = "small"
                 arai-label = "edit"
                 className = {classes.fab}
-                onClick = {() => onClick(sale)}
+                onClick = {() => onClick()}
         ><EditIcon/></Fab>
     );
 }
