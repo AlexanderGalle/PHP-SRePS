@@ -10,6 +10,7 @@ export default () => {
         <Navigation />
       </Grid>
       <Grid item md={10} style={{ padding: 40 }}>
+        <h1 style={{ textAlign: "center", fontSize: 35 }}>Sale Predictions</h1>
         <Predict />
       </Grid>
     </Grid>
