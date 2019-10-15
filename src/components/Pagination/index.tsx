@@ -17,6 +17,9 @@
                     page = {page}   setPage = {setPage}
                     rowsPerPage = {rowsPerPage} setRowsPerPage = {setRowsPerPage}
                 />
+        
+        Slice rows array according to page and rowsPerPage before mapping to HTML.
+                rows.slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => <TableRow>{row.name}</TableRow>)
 */
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
@@ -35,8 +38,6 @@ import {
 export default function({count, page, setPage, rowsPerPage, setRowsPerPage} 
             : {count: number, page: number, setPage: Function, rowsPerPage: number, setRowsPerPage: Function}) {
     
-    // if(count <= rowsPerPage)
-    //     return (<div/>);
     interface TablePaginationActionsProps {
       count: number;
       page: number;
