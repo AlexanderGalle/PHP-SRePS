@@ -1,43 +1,81 @@
-import React, { useState, useEffect } from 'react'
-import firebase from '../../../firebase'
+import React, { useState, useEffect } from "react";
+import firebase from "../../../firebase";
+import InventoryEditItem from "./edititem";
+import { Paper, Table, TableHead, TableCell, TableRow, TableBody } from "@material-ui/core";
+import Product from "../../../models/Product";
+import ProductItem from "./ProductItem";
+import PaginationFooter from '../../../components/Pagination'
 
+export default () => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [formModal, setFormModal] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<number>();
+  const [selectedProductItem, setSelectedProductItem] = useState<Product>({
+    id: "",
+    name: "",
+    price: 0,
+    quantity: 0
+  });
+  const toggleModal = () => setFormModal(!formModal);
+  const toggleEditItem = (index: number) => {
+    setSelectedProduct(index);
+    setSelectedProductItem(products[index]);
+    toggleModal();
+  };
 
-const InventoryDisplayItem = () => {
-    firebase.firestore().collection('items_test_a').get().then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-            // create new list elements
-            let li = document.createElement('li')
-            let name = document.createElement('span')
-            let price = document.createElement('span')
-            let quantity = document.createElement('span')
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("inventoryItem")
+      .get()
+      .then(snapshot => {
+        setProducts(
+          snapshot.docs.map(doc => ({
+            id: doc.id,
+            name: doc.data().name,
+            price: doc.data().price,
+            quantity: doc.data().quantity
+          }))
+        );
+      });
+  }, []);
 
-            // Insert data into text elements
-            li.setAttribute('data-id', doc.id)
-            name.textContent = doc.data().name + ", "
-            price.textContent = doc.data().price + ", "
-            quantity.textContent = doc.data().quantity
-
-            // insert text elements into singular item
-            li.appendChild(name)
-            li.appendChild(price)
-            li.appendChild(quantity)
-
-            // Put singular into our list element.
-            const list = document.getElementById('item_list')
-            if (list != null)
-                list.appendChild(li)
-        })
-    })
-                
-
-    return (
-        <div>
-            <h3>Display</h3>
-            <ol>
-                <p id="item_list"/>
-            </ol>
-        </div>
-    )
-}
-
-export default InventoryDisplayItem
+  return (
+    <div>
+      <h2>Display</h2>
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Quantity</TableCell>
+              <TableCell>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products ? (
+              products.slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
+                <ProductItem index={index + (page * rowsPerPage)} product={product} toggleEditItem={toggleEditItem} />
+              ))
+            ) : (
+              <> </>
+            )}
+          </TableBody>
+          <PaginationFooter
+              count={products.length} 
+              page={page} setPage={setPage}
+              rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage}/>
+        </Table>
+        <InventoryEditItem
+          toggleModal={toggleModal}
+          formModal={formModal}
+          product={selectedProductItem}
+        />
+      </Paper>
+    </div>
+  );
+};

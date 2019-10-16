@@ -1,69 +1,110 @@
-import React, { constructor, useState } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import { height } from '@material-ui/system';
-import { Button } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Grid, TextField, Button, Paper, Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core';
 import Navigation from '../../../components/Navigation';
-import { number } from 'prop-types';
-import undefined from 'firebase/empty-import';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    button: {
-      margin: theme.spacing(0.2),
-      //color: "red",
-    },
-    input: {
-      display: 'none',
-    },
-  }),
-
-);
-
-
-
+import ProductItem from './ProductItem';
+import firebase from 'firebase';
+import Product from '../../../models/Product';
 
 
 
 export default () => {
-    const classes = useStyles();
+  const [products, setProducts] = useState<Product[]>([
+    { id: "1", name: "one", price: 84, quantity: 1},
+    { id: "2", name: "one", price: 84, quantity: 1},
+    { id: "3", name: "one", price: 84, quantity: 1}
+  ])
 
-    
-    const [number, setNumber] = useState<string>("");
-    const addNumber = (newNumber: string) =>setNumber(number + newNumber);
-    
-    
-    function fetchItemFromBarcode(barcode: string) {
-      //item = firebase.getItem(barcode);
-  
-      //if item != null
-        //salesInventory.add(item) // adds item to the infentory list
-        //setNumber(""); // clears the barcode
-      // else alert("item not found")
-        alert(barcode);
-  
-        setNumber("");
-      };
+  const [barcode, setBarcode] = useState<number>();
 
+  const addItem = () => {
+    firebase
+    .firestore()
+    .collection("inventoryItem")
+    .where("barcode", "==", barcode)
+    .get()
+    .then(snapShot => {
+      if (!snapShot.empty) {
+        const product = snapShot.docs[0].data() as Product
+        setProducts([...products, product])
+      }
+      else 
+        alert("No items here by that barcode...")
+    })
+  }
+  
   return (
-    
-    <Grid container>                    
+    <Grid container>   
       <Grid item md={2}>
-          <Navigation />
+        <Navigation />
       </Grid>
+      <Grid item md={10}>
+        <Grid container direction="column">
+          <Grid item md={3}>
+            <Grid container>
+              <Grid item md={9}>
+                <TextField 
+                  type="number"
+                  label="Barcode"
+                  placeholder="Enter a barcode..."
+                  value={barcode}
+                  onChange={e => setBarcode(parseInt(e.target.value))}
+                />
+              </Grid>
+              <Grid item md={3}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick = {() => 
+                  addItem()}
+                >Enter</Button>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item md={9}>
+            <Paper>
+              <Table
+              style={{maxHeight: 600, overflowX: "hidden", overflowY: "scroll"}}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      Name
+                    </TableCell>
+                    <TableCell>
+                      Price
+                    </TableCell>
+                    <TableCell>
+                      Quantity
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {products.map(product => <ProductItem product={product}/>)}
+                </TableBody>
+              </Table>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  )
 
 
-        {/*  left side:
-        * 
-        * keypad to enter barcode
-        * a textview that shows the bar code
-        * an enter button that fetches an item from barcode
-        * 
-        * maybe a look-up button that checks if we have that item in stock ?
-        * 
-        */}
-        <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {/* <Grid>
             <div>
                 <Button variant="contained" onClick={() => addNumber("1")} className={classes.button}>1</Button>
                 <Button variant="contained" onClick={() => addNumber("2")} className={classes.button}>2</Button>
@@ -88,30 +129,10 @@ export default () => {
                 <Button variant="contained" onClick={() => fetchItemFromBarcode(number)} className={classes.button}>ENT</Button>
             </div>
             <p>{number}</p>
-        </div>
-
-
-        {/* Right side:
-          * 
-          * a list of scanned items, fetches data like price and name from database given the barcode, also shows quantity 
-          * dynamically updates the total value at the bottom of the list 
-          * a confirm sale buttom at the bottom of the screen which navigates to the payment page
-          * 
-          * 
-          * 
-        */}
-        <div>
-
-        </div>
-
-
-    </Grid>
-  );
-}
-
-
-
-
+        </Grid>
+      </Grid>
+    </Grid> */}
+};
 
 
 
