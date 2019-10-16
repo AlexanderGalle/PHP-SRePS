@@ -82,7 +82,8 @@ export default (props : BetterTableProps) =>
         let match = false;
 
         for(var property in item)
-            match = match || item[property].toString().toLowerCase().includes(query);
+            if(!match && headCells.find(heading => heading.id == property))
+                match = item[property].toString().toLowerCase().includes(query);
 
         return match;
     }
@@ -140,7 +141,8 @@ export default (props : BetterTableProps) =>
                             let element = [];
                             element.push(<TableRow></TableRow>)
                             for(var property in item)
-                                element.push(<TableCell>{item[property]}</TableCell>);
+                                if(headCells.find(heading => heading.id == property))
+                                    element.push(<TableCell>{item[property]}</TableCell>);
                             return element;
                         })}
                         </TableBody>

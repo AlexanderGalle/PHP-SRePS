@@ -47,9 +47,8 @@ export default () => {
     {id: "quantity", display: "quantity"},
     {id: "action", display: "Action"}
   ]
-  let rows = products;
-  rows.forEach((prod : any) => {
-    delete prod.id;
+
+  products.forEach((prod : any) => {
     prod.action = <EditButton onClick = {() => toggleEditItem(prod)}/>
   });
 
@@ -57,7 +56,7 @@ export default () => {
     <div>
         <BetterTable
           headCells = {headCells}
-          rows = {rows}
+          rows = {products}
           rowsPerPageDefault = {5}
           sortByDefault = 'index'
           search
