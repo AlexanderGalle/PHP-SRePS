@@ -5,6 +5,8 @@ import { Paper, Table, TableHead, TableCell, TableRow, TableBody } from "@materi
 import Product from "../../../models/Product";
 import ProductItem from "./ProductItem";
 import PaginationFooter from '../../../components/Pagination'
+import {EditButton} from '../../../components/Actions'
+import BetterTable from '../../../components/BetterTable'
 
 export default () => {
   const [page, setPage] = useState(0);
@@ -13,15 +15,16 @@ export default () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<number>();
   const [selectedProductItem, setSelectedProductItem] = useState<Product>({
+    index: 0,
     id: "",
     name: "",
     price: 0,
     quantity: 0
   });
   const toggleModal = () => setFormModal(!formModal);
-  const toggleEditItem = (index: number) => {
-    setSelectedProduct(index);
-    setSelectedProductItem(products[index]);
+  const toggleEditItem = (product:  Product) => {
+    setSelectedProduct(product.index);
+    setSelectedProductItem(product);
     toggleModal();
   };
 
@@ -32,7 +35,8 @@ export default () => {
       .get()
       .then(snapshot => {
         setProducts(
-          snapshot.docs.map(doc => ({
+          snapshot.docs.map((doc, index) => ({
+            index: index,
             id: doc.id,
             name: doc.data().name,
             price: doc.data().price,
@@ -41,41 +45,33 @@ export default () => {
         );
       });
   }, []);
+  const headCells = [
+    {id: "index", display: "Index"},
+    {id: "name", display: "Name"},
+    {id: "price", display: "Price"},
+    {id: "quantity", display: "quantity"},
+    {id: "action", display: "Action"}
+  ]
+  let rows = products;
+  rows.forEach((prod : any) => {
+    delete prod.id;
+    prod.action = <EditButton onClick = {() => toggleEditItem(prod)}/>
+  });
 
   return (
     <div>
-      <h2>Display</h2>
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>#</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Quantity</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {products ? (
-              products.slice(page*rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
-                <ProductItem index={index + (page * rowsPerPage)} product={product} toggleEditItem={toggleEditItem} />
-              ))
-            ) : (
-              <> </>
-            )}
-          </TableBody>
-          <PaginationFooter
-              count={products.length} 
-              page={page} setPage={setPage}
-              rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage}/>
-        </Table>
+        <BetterTable
+          headCells = {headCells}
+          rows = {rows}
+          rowsPerPageDefault = {5}
+          sortByDefault = 'index'
+          search
+        />
         <InventoryEditItem
           toggleModal={toggleModal}
           formModal={formModal}
           product={selectedProductItem}
         />
-      </Paper>
     </div>
-  );
+  )
 };
