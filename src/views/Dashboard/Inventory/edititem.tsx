@@ -32,7 +32,7 @@ export default ({
     firebase
       .firestore()
       .collection("inventoryItem")
-      .doc(product.id)
+      .doc(product.barcode)
       .set({
         name,
         price,

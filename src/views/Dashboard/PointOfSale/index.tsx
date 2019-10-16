@@ -9,12 +9,10 @@ import Product from '../../../models/Product';
 
 export default () => {
   const [products, setProducts] = useState<Product[]>([
-    { id: "1", name: "one", price: 84, quantity: 1},
-    { id: "2", name: "one", price: 84, quantity: 1},
-    { id: "3", name: "one", price: 84, quantity: 1}
+
   ])
 
-  const [barcode, setBarcode] = useState<number>();
+  const [barcode, setBarcode] = useState<string>();
 
   const addItem = () => {
     firebase
@@ -24,8 +22,26 @@ export default () => {
     .get()
     .then(snapShot => {
       if (!snapShot.empty) {
-        const product = snapShot.docs[0].data() as Product
-        setProducts([...products, product])
+        let quantityAdded = false
+        const snapshotProduct = snapShot.docs[0].data() as Product
+        snapshotProduct.quantity = 1;
+        products.forEach(product => {
+          if(product.barcode === snapshotProduct.barcode) {
+            product.quantity++;
+            //setProducts([...products])
+            console.log(products)
+            quantityAdded = true
+            return
+          }
+        })
+        if(quantityAdded) return
+        
+        setProducts([...products, snapshotProduct])
+
+
+//result
+// new product (result.name, result.pirce, 1)
+
       }
       else 
         alert("No items here by that barcode...")
@@ -47,7 +63,7 @@ export default () => {
                   label="Barcode"
                   placeholder="Enter a barcode..."
                   value={barcode}
-                  onChange={e => setBarcode(parseInt(e.target.value))}
+                  onChange={e => setBarcode(e.target.value)}
                 />
               </Grid>
               <Grid item md={3}>
