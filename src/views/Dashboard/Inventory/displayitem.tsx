@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
 import firebase from "../../../firebase";
 import InventoryEditItem from "./edititem";
-import { Paper, Table, TableHead, TableCell, TableRow, TableBody } from "@material-ui/core";
 import Product from "../../../models/Product";
-import ProductItem from "./ProductItem";
-import PaginationFooter from '../../../components/Pagination'
 import {EditButton} from '../../../components/Actions'
 import BetterTable from '../../../components/BetterTable'
 
 export default () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [formModal, setFormModal] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<number>();

@@ -28,7 +28,7 @@
                 sortRows(rows, orderBy, order).map(<some html/>)
 */
 
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {
     Table,
     TableHead,
@@ -41,7 +41,6 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import PaginationFooter from './Pagination'
 import SortingHeader, {sortRows, Order, HeadCell} from './Sorting'
-import {EditButton, DeleteButton} from '../Actions'
 
 interface BetterTableProps {
     headCells: HeadCell[],
