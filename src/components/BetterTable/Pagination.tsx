@@ -44,7 +44,7 @@ export default function({count, page, setPage, rowsPerPage, setRowsPerPage}
       rowsPerPage: number;
       onChangePage: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, newPage: number) => void;
     }
-    
+
     const TablePaginationActions = (props: TablePaginationActionsProps) =>
     {
       const useStyles = makeStyles((theme: Theme) =>

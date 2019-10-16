@@ -64,10 +64,10 @@ export default ({
           </CardHeader>
           <CardBody>
             <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField defaultValue={price} label="Price" />
+              <TextField defaultValue={price} label="Price"  onChange = {(event) => setPrice(parseFloat(event.currentTarget.value))}/>
             </FormControl>
             <FormControl fullWidth style={{ marginTop: 10 }}>
-              <TextField defaultValue={quantity} label="Quantity" />
+              <TextField defaultValue={quantity} label="Quantity" onChange = {(event) => setQuantity(parseInt(event.currentTarget.value))} />
             </FormControl>
           </CardBody>
           <CardFooter>
