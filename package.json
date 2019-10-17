@@ -19,6 +19,7 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
+    "react-window": "^1.8.5",
     "reactstrap": "^8.0.1",
     "typescript": "3.6.3"
   },
@@ -42,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-window": "^1.8.1"
   }
 }
