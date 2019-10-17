@@ -26,17 +26,16 @@ export default () => {
         const snapshotProduct = snapShot.docs[0].data() as Product
         snapshotProduct.quantity = 1;
         products.forEach(product => {
-          if(product.barcode === snapshotProduct.barcode) {
+          if(product.barcode == snapshotProduct.barcode) {
             product.quantity++;
-            //setProducts([...products])
-            console.log(products)
+            product.price = product.quantity * snapshotProduct.price;
+            setProducts([...products]) // update list (pass by reference so not demanding funct)
+            
             quantityAdded = true
             return
           }
         })
-        if(quantityAdded) return
-        
-        setProducts([...products, snapshotProduct])
+        if(!quantityAdded) setProducts([...products, snapshotProduct]);
 
 
 //result
@@ -59,7 +58,7 @@ export default () => {
             <Grid container>
               <Grid item md={9}>
                 <TextField 
-                  type="number"
+                  type="string"
                   label="Barcode"
                   placeholder="Enter a barcode..."
                   value={barcode}
@@ -79,17 +78,17 @@ export default () => {
           <Grid item md={9}>
             <Paper>
               <Table
-              style={{maxHeight: 600, overflowX: "hidden", overflowY: "scroll"}}>
+              style={{maxHeight: 600, overflowX: "hidden", overflowY: "scroll", alignContent:"left"}}>
                 <TableHead>
                   <TableRow>
                     <TableCell>
                       Name
                     </TableCell>
                     <TableCell>
-                      Price
+                      Quantity
                     </TableCell>
                     <TableCell>
-                      Quantity
+                    Price
                     </TableCell>
                   </TableRow>
                 </TableHead>
