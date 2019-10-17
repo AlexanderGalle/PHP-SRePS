@@ -10,8 +10,7 @@ export default () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<number>();
   const [selectedProductItem, setSelectedProductItem] = useState<Product>({
-    index: 0,
-    id: "",
+    barcode: "",
     name: "",
     price: 0,
     quantity: 0
@@ -30,9 +29,9 @@ export default () => {
       .get()
       .then(snapshot => {
         setProducts(
-          snapshot.docs.map((doc, index) => ({
-            index: index,
-            id: doc.id,
+
+          snapshot.docs.map(doc => ({
+            barcode: doc.id,
             name: doc.data().name,
             price: doc.data().price,
             quantity: doc.data().quantity

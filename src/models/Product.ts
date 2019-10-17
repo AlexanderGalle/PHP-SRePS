@@ -1,6 +1,5 @@
 export interface Product {
-  index: number;
-  id: string;
+  barcode: string;
   name: string;
   price: number;
   quantity: number;
