@@ -35,7 +35,12 @@ export default () => {
             id="csvButton"
             style={{ position: "absolute", right: 43, top: 60 }}
             onClick={() => {
-              WriteCSV();
+              var lines = new Array(
+                new Array("glass", "12", "$23.12"),
+                new Array("ball", "64", "$46.34"),
+                new Array("shower cap", "23", "$67.45")
+              );
+              WriteCSV("weeky_report", new Array("Item","Quantity","Price"), lines);
             }}
           >
             CSV TEST
