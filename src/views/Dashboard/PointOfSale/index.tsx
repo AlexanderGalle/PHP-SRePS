@@ -18,12 +18,11 @@ export default () => {
     firebase
     .firestore()
     .collection("inventoryItem")
-    .where("barcode", "==", barcode)
-    .get()
+    .doc(barcode).get()
     .then(snapShot => {
-      if (!snapShot.empty) {
+      //if (!snapShot.empty) {
         let quantityAdded = false
-        const snapshotProduct = snapShot.docs[0].data() as Product
+        const snapshotProduct = snapShot.data() as Product
         snapshotProduct.quantity = 1;
         products.forEach(product => {
           if(product.barcode == snapshotProduct.barcode) {
@@ -41,10 +40,10 @@ export default () => {
 //result
 // new product (result.name, result.pirce, 1)
 
-      }
-      else 
-        alert("No items here by that barcode...")
-    })
+      // }
+      // else 
+      //   alert("No items here by that barcode...")
+    }).catch(err => alert("No items here by that barcode..."))
   }
   
   return (
