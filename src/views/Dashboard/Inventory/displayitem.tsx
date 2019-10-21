@@ -50,7 +50,7 @@ export default () => {
     prod.action = (<div className = "container">
                 {(<EditButton onClick = {() => toggleEditItem(prod)}/>)}
                 {(<DeleteButton onClick = {() => {
-                  firebase.firestore().collection("inventoryItem").doc(prod.id).delete().then(() => { window.location.reload() });
+                  firebase.firestore().collection("inventoryItem").doc(prod.barcode).delete()//.then(() => { window.location.reload() });
                 }}/>)}
                 </div>)
   });
