@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import firebase from "../../../firebase";
 import InventoryEditItem from "./edititem";
 import Product from "../../../models/Product";
-import {EditButton} from '../../../components/Actions'
+import {EditButton, DeleteButton} from '../../../components/Actions'
 import BetterTable from '../../../components/BetterTable'
 
 export default () => {
@@ -47,7 +47,12 @@ export default () => {
   ]
 
   products.forEach((prod : any) => {
-    prod.action = <EditButton onClick = {() => toggleEditItem(prod)}/>
+    prod.action = (<div className = "container">
+                {(<EditButton onClick = {() => toggleEditItem(prod)}/>)}
+                {(<DeleteButton onClick = {() => {
+                  firebase.firestore().collection("inventoryItem").doc(prod.id).delete().then(() => { window.location.reload() });
+                }}/>)}
+                </div>)
   });
 
   return (
