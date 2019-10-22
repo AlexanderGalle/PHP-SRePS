@@ -17,7 +17,7 @@ export default () => {
   });
   const toggleModal = () => setFormModal(!formModal);
   const toggleEditItem = (product:  Product) => {
-    setSelectedProduct(product.index);
+    //setSelectedProduct(product.index);
     setSelectedProductItem(product);
     toggleModal();
   };
