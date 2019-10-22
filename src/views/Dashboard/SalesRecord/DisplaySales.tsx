@@ -53,8 +53,8 @@ export default function DisplaySales({
     return {
       item_name : sale.item_name,
       price: "$" + sale.price,
-      quantity: "$" + sale.quantity,
-      total_price: sale.price * sale.quantity,
+      quantity: sale.quantity,
+      total_price: "$" + sale.price * sale.quantity,
       date: sale.date ? sale.date.toDate().toLocaleDateString("en-AU") : "",
       ...(handleEditClick != undefined || handleDeleteClick != undefined) && {
             action: (<div className = "container">
