@@ -71,9 +71,13 @@ export default () => {
               var list = new Array<String[]>();
               const fb = firebase.firestore();
               const col = fb.collection("salesRecord");
-              col.get().then(querySnapshot => {
+              const query = col
+                .where('date', '<=', new firebase.firestore.Timestamp(firebase.firestore.Timestamp.now().seconds, 0))
+                .where('date', '>=', new firebase.firestore.Timestamp(firebase.firestore.Timestamp.now().seconds - 86400 * 7, 0));
+
+              query.get().then(querySnapshot => {
                   querySnapshot.docs.forEach(doc => {
-                    var data = new Array<String>(doc.data().item_name, doc.data().quantity.toString(), "$" + (doc.data().price * doc.data().quantity).toString(), "23/10/2019"); //doc.data().date
+                    var data = new Array<String>(doc.data().item_name, doc.data().quantity.toString(), "$" + (doc.data().price * doc.data().quantity).toString(), doc.data().date.toDate());
                     list.push(data);
                   })
                 }).finally(() => {
@@ -92,9 +96,13 @@ export default () => {
               var list = new Array<String[]>();
               const fb = firebase.firestore();
               const col = fb.collection("salesRecord");
-              col.get().then(querySnapshot => {
+              const query = col
+                .where('date', '<=', new firebase.firestore.Timestamp(firebase.firestore.Timestamp.now().seconds, 0))
+                .where('date', '>=', new firebase.firestore.Timestamp(firebase.firestore.Timestamp.now().seconds - 86400 * 30, 0));
+
+              query.get().then(querySnapshot => {
                   querySnapshot.docs.forEach(doc => {
-                    var data = new Array<String>(doc.data().item_name, doc.data().quantity.toString(), "$" + (doc.data().price * doc.data().quantity).toString(), "23/10/2019"); //doc.data().date
+                    var data = new Array<String>(doc.data().item_name, doc.data().quantity.toString(), "$" + (doc.data().price * doc.data().quantity).toString(), doc.data().date.toDate());
                     list.push(data);
                   })
                 }).finally(() => {
