@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Button } from "@material-ui/core";
 import Navigation from "../../../components/Navigation";
 import AddSales from "./AddSales";
@@ -7,8 +7,10 @@ import EditSales from "./EditSales";
 import firebase from "../../../firebase";
 import { useSales } from "./DisplaySales";
 import SalesRecord from "./SalesRecordInterface";
+import WriteCSV from "../../../components/CSV/WriteCSV";
 
 export default () => {
+
   const [formModal, setFormModal] = useState(false);
   const toggleModal = () => setFormModal(!formModal);
 
@@ -60,6 +62,48 @@ export default () => {
       </Grid>
       <AddSales toggleModal={toggleModal} formModal={formModal} getListItems={useSales} />
       <EditSales toggleModal={toggleModal2} formModal={formModal2} salesRecordData={saleToEdit} />
+      <Button
+            variant="contained"
+            color="primary"
+            id="csvButton"
+            style={{ position: "absolute", right: 43, top: 60 }}
+            onClick={() => {
+              var list = new Array<String[]>();
+              const fb = firebase.firestore();
+              const col = fb.collection("salesRecord");
+              col.get().then(querySnapshot => {
+                  querySnapshot.docs.forEach(doc => {
+                    var data = new Array<String>(doc.data().item_name, doc.data().quantity.toString(), "$" + (doc.data().price * doc.data().quantity).toString(), "23/10/2019"); //doc.data().date
+                    list.push(data);
+                  })
+                }).finally(() => {
+                  WriteCSV("weeky_report", new Array("Item","Quantity","Total Price","Date"), list);
+                });
+            }}
+          >
+            Weekly Sales Report CSV
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            id="csvButton"
+            style={{ position: "absolute", right: 43, top: 100 }}
+            onClick={() => {
+              var list = new Array<String[]>();
+              const fb = firebase.firestore();
+              const col = fb.collection("salesRecord");
+              col.get().then(querySnapshot => {
+                  querySnapshot.docs.forEach(doc => {
+                    var data = new Array<String>(doc.data().item_name, doc.data().quantity.toString(), "$" + (doc.data().price * doc.data().quantity).toString(), "23/10/2019"); //doc.data().date
+                    list.push(data);
+                  })
+                }).finally(() => {
+                  WriteCSV("monthly_report", new Array("Item","Quantity","Total Price","Date"), list);
+                });
+            }}
+          >
+            Monthly Sales Report CSV
+          </Button>
     </Grid>
   );
 };
