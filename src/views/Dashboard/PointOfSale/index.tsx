@@ -78,7 +78,7 @@ export default () => {
           <Grid item md={9}>
             <Paper>
               <Table
-              style={{maxHeight: 600, overflowX: "hidden", overflowY: "scroll", alignContent:"left"}}>
+              style={{maxHeight: 600, overflowX: "hidden", overflowY: "scroll"}}>
                 <TableHead>
                   <TableRow>
                     <TableCell>
