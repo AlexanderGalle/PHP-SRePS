@@ -5,13 +5,12 @@ import InventoryDisplayItem from "./displayitem";
 import { Grid, Button } from "@material-ui/core";
 import Navigation from "../../../components/Navigation";
 import AddInventoryItem from "./AddInventoryItem";
-// CSV TEST
-import WriteCSV from "../../../components/CSV/WriteCSV";
 
 export default () => {
   const [formModal, setFormModal] = useState(false);
   const toggleModal = () => setFormModal(!formModal);
   const [inventory, setInventory] = useState([]);
+
   return (
     <Grid container>
       <Grid item md={2}>
@@ -28,17 +27,6 @@ export default () => {
             onClick={() => toggleModal()}
           >
             Add to Inventory
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            id="csvButton"
-            style={{ position: "absolute", right: 43, top: 60 }}
-            onClick={() => {
-              WriteCSV();
-            }}
-          >
-            CSV TEST
           </Button>
           <InventoryDisplayItem />
         </div>
