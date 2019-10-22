@@ -25,7 +25,7 @@ export function useSales(limit?: number) {
     const unsubscribe = salesRef.onSnapshot(snapshot => {
         setSales(
           snapshot.docs.map(doc => {
-            console.log(doc.data().date);
+            //console.log(doc.data().date);
             return {
               id: doc.id,
               ...doc.data()

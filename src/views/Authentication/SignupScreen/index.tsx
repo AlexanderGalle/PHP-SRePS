@@ -16,7 +16,7 @@ export default () => {
     setLoading(true);
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password)
       .then(() => setLoading(false));
   };
 
@@ -25,7 +25,7 @@ export default () => {
       <form style={styles.formContainer} onSubmit={event => authenticateUser(event)}>
         <ProfilePicture />
         <p style={{ textAlign: "center", color: Color.lightGrey, paddingTop: 50 }}>
-          {"Welcome! Please enter your details to login."}
+          {"Welcome! Please enter your details to signup."}
         </p>
         <FormControl style={styles.inputGroup}>
           <InputLabel htmlFor="email_address">Email</InputLabel>
@@ -55,9 +55,9 @@ export default () => {
             marginTop: 30
           }}
         >
-          <LoginButton type="submit">{loading ? "Loading" : "Login"}</LoginButton>
-          <Link to="/signup">
-            <SignupButton>Sign Up</SignupButton>
+          <LoginButton type="submit">{loading ? "Loading" : "Sign Up"}</LoginButton>
+          <Link to="/login">
+            <SignupButton>Cancel</SignupButton>
           </Link>
         </FormControl>
       </form>
