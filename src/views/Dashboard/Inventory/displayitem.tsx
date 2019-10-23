@@ -1,43 +1,74 @@
-import React, { useState, useEffect } from 'react'
-import firebase from '../../../firebase'
+import React, { useState, useEffect } from "react";
+import firebase from "../../../firebase";
+import InventoryEditItem from "./edititem";
+import Product from "../../../models/Product";
+import {EditButton, DeleteButton} from '../../../components/Actions'
+import BetterTable from '../../../components/BetterTable'
 
+export default () => {
+  const [formModal, setFormModal] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedProductItem, setSelectedProductItem] = useState<Product>({
+    index: 0,
+    barcode: "",
+    name: "",
+    price: 0,
+    quantity: 0,
+  });
+  const toggleModal = () => setFormModal(!formModal);
+  const toggleEditItem = (product:  Product) => {
+    setSelectedProductItem(product);
+    toggleModal();
+  };
 
-const InventoryDisplayItem = () => {
-    firebase.firestore().collection('items_test_a').get().then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-            // create new list elements
-            let li = document.createElement('li')
-            let name = document.createElement('span')
-            let price = document.createElement('span')
-            let quantity = document.createElement('span')
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("inventoryItem")
+      .onSnapshot(snapshot => {
+        setProducts(
+          snapshot.docs.map((doc, index) => ({
+            index: index,
+            barcode: doc.id,
+            name: doc.data().name,
+            price: doc.data().price,
+            quantity: doc.data().quantity
+          }))
+        );
+      });
+  }, []);
+  const headCells = [
+    {id: "index", display: "Index"},
+    {id: "barcode", display: "Barcode"},
+    {id: "name", display: "Name"},
+    {id: "price", display: "Price"},
+    {id: "quantity", display: "Quantity"},
+    {id: "action", display: "Action"}
+  ]
 
-            // Insert data into text elements
-            li.setAttribute('data-id', doc.id)
-            name.textContent = doc.data().name + ", "
-            price.textContent = doc.data().price + ", "
-            quantity.textContent = doc.data().quantity
+  products.forEach((prod : any) => {
+    prod.action = (<div className = "container">
+                {(<EditButton onClick = {() => toggleEditItem(prod)}/>)}
+                {(<DeleteButton onClick = {() => {
+                  firebase.firestore().collection("inventoryItem").doc(prod.barcode).delete()//.then(() => { window.location.reload() });
+                }}/>)}
+                </div>)
+  });
 
-            // insert text elements into singular item
-            li.appendChild(name)
-            li.appendChild(price)
-            li.appendChild(quantity)
-
-            // Put singular into our list element.
-            const list = document.getElementById('item_list')
-            if (list != null)
-                list.appendChild(li)
-        })
-    })
-                
-
-    return (
-        <div>
-            <h3>Display</h3>
-            <ol>
-                <p id="item_list"/>
-            </ol>
-        </div>
-    )
-}
-
-export default InventoryDisplayItem
+  return (
+    <div>
+        <BetterTable
+          headCells = {headCells}
+          rows = {products}
+          rowsPerPageDefault = {5}
+          sortByDefault = 'index'
+          search
+        />
+        <InventoryEditItem
+          toggleModal={toggleModal}
+          formModal={formModal}
+          product={selectedProductItem}
+        />
+    </div>
+  )
+};

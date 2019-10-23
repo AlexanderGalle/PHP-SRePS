@@ -1,22 +1,41 @@
-import React from 'react';
-import InventoryAddItem from './additem';
-import InventoryDisplayItem from './displayitem';
+import React, { useState } from "react";
+import InventoryAddItem from "./additem";
+import InventoryDisplayItem from "./displayitem";
 // Nav bar
-import { Grid } from '@material-ui/core';
-import Navigation from '../../../components/Navigation';
+import { Grid, Button } from "@material-ui/core";
+import Navigation from "../../../components/Navigation";
+import AddInventoryItem from "./AddInventoryItem";
 
+export default () => {
+  const [formModal, setFormModal] = useState(false);
+  const toggleModal = () => setFormModal(!formModal);
+  const [inventory, setInventory] = useState([]);
 
-export default () => (
+  return (
     <Grid container>
-        <Grid item md={2}>
-            <Navigation/>
-        </Grid>
-        <Grid item md={10}>
-            <div>
-                <h1>Inventory</h1>
-                <InventoryDisplayItem/>
-                <InventoryAddItem/>
-            </div>
-        </Grid>
+      <Grid item md={2}>
+        <Navigation />
+      </Grid>
+      <Grid item md={10} style={{ padding: 40 }}>
+        <div>
+          <h1 style={{ textAlign: "center", fontSize: 35 }}>Inventory</h1>
+          <Button
+            variant="contained"
+            color="primary"
+            id="addButton"
+            style={{ position: "absolute", right: 43, top: 20 }}
+            onClick={() => toggleModal()}
+          >
+            Add to Inventory
+          </Button>
+          <InventoryDisplayItem />
+        </div>
+      </Grid>
+      <AddInventoryItem
+        toggleModal={toggleModal}
+        formModal={formModal}
+        getListItems={setInventory}
+      />
     </Grid>
-);
+  );
+};
