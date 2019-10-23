@@ -36,16 +36,19 @@ export default () => {
               
               quantityAdded = true
               getTotal();
-              return
+              //return
             }
           })
+          
           if(!quantityAdded) 
           {
-            console.log("adding item : " + snapshotProduct.name);
             setProducts([...products, snapshotProduct]);
           }
           
           getTotal();
+          console.log("adding item : " + snapshotProduct.name);
+          console.log(products.length)
+          console.log(products.length)
         }
         else 
           alert("No items here by that barcode...")
@@ -67,12 +70,6 @@ export default () => {
 
   function writeSalesData(product: Product) {
 
-console.log(new Date().getDate().toString() + '/' + (new Date().getMonth().toString() + 1) + '/' + new Date().getFullYear().toString() + ' ' + new Date().getHours().toString() + ':' + new Date().getMinutes().toString() + ':' + new Date().getSeconds().toString());
-console.log(product.barcode);
-console.log(product.name);
-console.log(product.price / product.quantity);
-console.log(product.quantity);
-
       firebase
       .firestore()
       .collection("salesRecord")
@@ -92,6 +89,7 @@ console.log(product.quantity);
         writeSalesData(product)
       })
     }
+    setTotal(0);
     setProducts([]);
   }
   
@@ -171,46 +169,6 @@ console.log(product.quantity);
       </Grid>
     </Grid>
   )
-
-
-
-
-
-
-
-
-
-
-
-
-        {/* <Grid>
-            <div>
-                <Button variant="contained" onClick={() => addNumber("1")} className={classes.button}>1</Button>
-                <Button variant="contained" onClick={() => addNumber("2")} className={classes.button}>2</Button>
-                <Button variant="contained" onClick={() => addNumber("3")} className={classes.button}>3</Button>
-            </div>
-
-            <div>
-                <Button variant="contained" onClick={() => addNumber("4")} className={classes.button}>4</Button>
-                <Button variant="contained" onClick={() => addNumber("5")} className={classes.button}>5</Button>
-                <Button variant="contained" onClick={() => addNumber("6")} className={classes.button}>6</Button>
-            </div>
-
-            <div>
-                <Button variant="contained" onClick={() => addNumber("7")} className={classes.button}>7</Button>
-                <Button variant="contained" onClick={() => addNumber("8")} className={classes.button}>8</Button>
-                <Button variant="contained" onClick={() => addNumber("9")} className={classes.button}>9</Button>
-            </div>
-
-            <div>
-                <Button variant="contained" onClick={() => setNumber("")} className={classes.button}>CLR</Button>
-                <Button variant="contained" onClick={() => addNumber("0")} className={classes.button}>0</Button>
-                <Button variant="contained" onClick={() => fetchItemFromBarcode(number)} className={classes.button}>ENT</Button>
-            </div>
-            <p>{number}</p>
-        </Grid>
-      </Grid>
-    </Grid> */}
 };
 
 
