@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import firebase from '../../../firebase'
 import BetterTable from '../../../components/BetterTable'
+import WriteCSV from "../../../components/CSV/WriteCSV";
 const SALES_HISTORY_LENGTH = 7
 
 function getDate(days: number) : Date   //  days is number of days ago.
@@ -73,10 +74,28 @@ export default () => {
                                     : "Never"}
     });   
     
-    return <BetterTable headCells = {headCells} 
+    return (
+	<div className = "container">
+		<Button
+			variant = "contained"
+			color = "primary"
+			id = "csvButton"
+			style = {{position: "absolute", right: 43, top: 60}}
+			onClick = {() => {
+				const writeableItems = items.map(item => {
+					return new Array(item.name, item.quantity, item.weeklySales, item.monthlySales, item.stockDepleted);
+				});
+				const headers = headCells.map(header => {
+					return header.display;
+				});
+				WriteCSV("predict_sales", headers, writeableItems);
+			}}
+		<BetterTable headCells = {headCells} 
                         rows = {items}
                         rowsPerPageDefault = {10}
                         sortByDefault = 'stockDepleted'
                         search/>
+	</div>
+	);
 }
 
