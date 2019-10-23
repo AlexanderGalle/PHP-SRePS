@@ -10,6 +10,7 @@ export default () => {
   const [formModal, setFormModal] = useState(false);
   const toggleModal = () => setFormModal(!formModal);
   const [inventory, setInventory] = useState([]);
+
   return (
     <Grid container>
       <Grid item md={2}>

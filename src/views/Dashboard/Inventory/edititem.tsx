@@ -37,10 +37,7 @@ export default ({
         name,
         price,
         quantity
-      })
-      .then(() => {
-        window.location.reload()
-      });
+      }).finally(() => toggleModal());
   };
 
   useEffect(() => {
