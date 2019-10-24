@@ -25,7 +25,6 @@ export function useSales(limit?: number) {
     const unsubscribe = salesRef.onSnapshot(snapshot => {
         setSales(
           snapshot.docs.map(doc => {
-            //console.log(doc.data().date);
             return {
               id: doc.id,
               ...doc.data()
@@ -52,9 +51,9 @@ export default function DisplaySales({
   const sales = useSales(limit).map((sale : any) => {
     return {
       item_name : sale.item_name,
-      price: "$" + sale.price,
+      price: "$" + Math.round(sale.price * 100)/100,
       quantity: sale.quantity,
-      total_price: "$" + sale.price * sale.quantity,
+      total_price: "$" + Math.round((sale.price * sale.quantity)*100)/100,
       date: sale.date ? sale.date.toDate().toLocaleDateString("en-AU") : "",
       ...(handleEditClick != undefined || handleDeleteClick != undefined) && {
             action: (<div className = "container">
