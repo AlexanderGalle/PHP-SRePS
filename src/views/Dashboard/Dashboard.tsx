@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Divider,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Paper,
-  useMediaQuery
-} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import Navigation from "../../components/Navigation";
 import DisplaySales from "./SalesRecord/DisplaySales"
-import { Color } from "../../common";
-import { textAlign } from "@material-ui/system";
 import firebase from "../../firebase";
-import { number } from "prop-types";
+import {usePredictions} from "./SalesPrediction/Predict";
+import BetterTable from "../../components/BetterTable";
+import { makeStyles } from '@material-ui/core/styles'
 
 const style = {
   textStyle: {
@@ -26,9 +16,20 @@ const style = {
   }
 };
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    backgroundColor: "rgb(27,36,48)",
+    "padding-bottom": "50px",
+    "padding-top": "20px",
+    "margin-top": "20px",
+    "margin-bottom": "20px"
+  }
+}));
+
 export default () => {
   const [totalSales, setTotalSales] = useState<number>(0);
   const [revenue, setRevenue] = useState<number>(0);
+  const styles = useStyles();
 
   const getSummaries = () => {
     firebase
@@ -42,7 +43,7 @@ export default () => {
         revenue += doc.data().price * doc.data().quantity;
       });
       setTotalSales(sales);
-      setRevenue(revenue);      
+      setRevenue(Math.round(revenue * 100)/100);      
     });
   };
 
@@ -50,6 +51,12 @@ export default () => {
     getSummaries();
   }, []);
 
+  const lowStockItems = usePredictions().filter(item => item.stockDepleted != "Never").slice(0,5);
+  const headCells = [
+    {id: "name", display: "Item"},
+    {id: "quantity", display: "Quantity"},
+    {id: "stockDepleted", display: "Stock Depleted by"}
+  ]
   return (
     <Grid container>
       <Grid item md={2}>
@@ -58,11 +65,10 @@ export default () => {
       <Grid item md={10} style={{ padding: 40 }}>
         <h1 style={{ fontSize: 30 }}>Dashboard</h1>
         <div
+          className = {styles.container}
           style={{
             width: "49%",
-            height: "35%",
             float: "left",
-            backgroundColor: "rgb(27, 36, 48)"
           }}
         >
           <h2 style={{ ...style.textStyle, textAlign: "center" }}>
@@ -73,12 +79,11 @@ export default () => {
           </h2>
         </div>
         <div
+          className = {styles.container}
           style={{
             width: "49%",
-            height: "35%",
             float: "right",
             backgroundColor: "rgb(27, 36, 48)",
-            marginBottom: 20
           }}
         >
           <h2 style={{ ...style.textStyle, textAlign: "center" }}>
@@ -89,10 +94,9 @@ export default () => {
           </h2>
         </div>
         <div
+          className = {styles.container}
           style={{
             width: "100%",
-            height: "60%",
-            backgroundColor: "rgb(27, 36, 48)",
             clear: "both"
           }}
         >
@@ -101,6 +105,23 @@ export default () => {
           </h2>
           <div style={{ width: "95%", margin: "auto" }}>
             <DisplaySales limit = {5} />
+          </div>
+        </div>
+        <div
+          className = {styles.container}
+          style={{
+            width: "100%",
+            clear: "both"
+          }}
+        >
+          <h2 style={{ ...style.textStyle, marginTop: 10, marginLeft: 23 }}>
+            Low Stocked Items
+          </h2>
+          <div style={{ width: "95%", margin: "auto" }}>
+            <BetterTable
+              headCells={headCells}
+              rows={lowStockItems}
+            />          
           </div>
         </div>
       </Grid>

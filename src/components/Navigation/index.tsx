@@ -13,7 +13,7 @@ const style = {
 };
 
 export default () => (
-  <List style={{ backgroundColor: "rgb(27, 36, 48)" }} className="navigation-min-height">
+  <List style={{ backgroundColor: "rgb(27, 36, 48)", height: "100%" }} className="navigation-min-height">
     <ListItem>
       <Link to="/" style={style.navigationLink}>
         Dashboard

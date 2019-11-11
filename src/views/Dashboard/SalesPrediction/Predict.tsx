@@ -60,16 +60,9 @@ function useItems() {
   return items;
 }
 
-export default () => {
-  const headCells = [
-    { id: "name", display: "Item Name" },
-    { id: "quantity", display: "Quantity" },
-    { id: "weeklySales", display: "Weekly Sales" },
-    { id: "monthlySales", display: "Montly Sales" },
-    { id: "stockDepleted", display: "Stock depleted" }
-  ];
-
-  const items = useItems().map(item => {
+export function usePredictions()
+{
+  return useItems().map(item => {
     return {
       name: item.name,
       quantity: item.quantity,
@@ -84,7 +77,25 @@ export default () => {
             ).toLocaleDateString("en-AU")
           : "Never"
     };
-  });
+  }).sort((a,b) => {  //  Sort by stock depleted by default.
+    if(a.stockDepleted < b.stockDepleted)
+      return -1;
+    if(a.stockDepleted > b.stockDepleted)
+      return 1;
+    return 0;
+  })
+}
+
+export default () => {
+  const headCells = [
+    { id: "name", display: "Item Name" },
+    { id: "quantity", display: "Quantity" },
+    { id: "weeklySales", display: "Weekly Sales" },
+    { id: "monthlySales", display: "Montly Sales" },
+    { id: "stockDepleted", display: "Stock Depleted By" }
+  ];
+
+  const items = usePredictions();
 
   return (
     <div className="container">
