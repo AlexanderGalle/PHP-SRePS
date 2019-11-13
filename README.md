@@ -1,8 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## What is PHP-SRePS
+## What is PHP-SRePS?
 
-PHP-SRePS is a React web application that is desgined to manage a small business' inventory, Sales Record, prediction off that sales record and a point of sales system while also being able to export the sales record and predictions to CSV files.
+PHP-SRePS is a React web application that is desgined to manage a small business' inventory and Sales Record aswell as make predictions based off the sales record and contains point of sales system, while also being able to export the sales record and predictions to CSV files.
 
 ## Available Scripts
 
